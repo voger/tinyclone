@@ -20,7 +20,7 @@ defmodule TinyClone.MixProject do
   def application do
     [
       mod: {TinyClone.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :absinthe]
     ]
   end
 
@@ -46,6 +46,7 @@ defmodule TinyClone.MixProject do
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
       {:absinthe_ecto, ">= 0.0.0"},
+      {:custom_base, "~> 0.2.1"},
       {:clouseau, github: "voger/clouseau", branch: "fix_template_crash"}
     ]
   end

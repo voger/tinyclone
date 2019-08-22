@@ -4,10 +4,11 @@ defmodule TinyClone.Repo.Migrations.CreateUrls do
   def change do
     create table(:urls) do
       add :original, :string, null: true, size: 255
-      references("links", column: :identifier)
 
       timestamps()
     end
+
+   create unique_index(:urls, [:original])
 
   end
 end
