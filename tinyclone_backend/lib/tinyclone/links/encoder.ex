@@ -1,5 +1,5 @@
 defmodule TinyClone.Links.Encoder do
-  @characters '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  @characters '0123456789abcdefghijklmnopqrstuvwxyz'
   use CustomBase, @characters
 
   @doc """

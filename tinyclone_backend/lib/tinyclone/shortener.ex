@@ -8,22 +8,35 @@ defmodule TinyClone.Shortener do
   require Cl
 
   def shorten(original, custom \\ nil) do
-    url =
-      Url
-      |> Repo.get_by(original: original)
-      |> Repo.preload(:links)
+    url = get_link(original, custom)
 
     unless url do
-      Multi.new()
-      |> Multi.insert(:url, Url.create_changeset(%Url{}, %{original: original}))
-      |> Multi.insert(:link, fn %{url: %{id: id} = url} ->
-        identifier = custom || TinyClone.Links.Encoder.encode(id)
-
-        Ecto.build_assoc(url, :links)
-        |> Link.create_changeset(%{identifier: identifier, custom: !!custom})
-      end)
-      |> Repo.transaction()
-      |> Cl.inspect(label: "-b Transaction result")
+      
+    else
+      
     end
+  end
+
+  def get_link(original, custom) do
+    query = from u in "urls",
+      join: l in "links",
+      on: l.url_id == u.id,
+      where: ^filter_original(original),
+      where: ^filter_link(custom),
+      select: %{url: u.original, identifier: l.identifier}
+
+      Repo.one(query)
+  end
+
+  def filter_original(url) do
+    dynamic([u, l], u.original == ^url)
+  end
+
+  def filter_link(nil) do
+    dynamic([u, l], l.custom == false)
+  end
+
+  def filter_link(custom) do
+    dynamic([u, l], l.custom == true and l.identifier == ^custom)
   end
 end
