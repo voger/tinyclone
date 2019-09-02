@@ -5,8 +5,29 @@ defmodule TinyClone.Shortener do
   alias TinyClone.Links.{Url, Link}
   alias Ecto.Multi
 
-  require Cl
+  # credo:disable-for-this-file Credo.Check.Refactor.UnlessWithElse
 
+  @moduledoc """
+  The shortner context module. It is responsible for generating a short link
+  to represent the longer url.
+  """
+
+  @doc """
+  Generates a short id that can provided instead of the long `original`.
+  That id is persisted in the database and can be used later to retrieve 
+  the `original` url.
+  Optionally a `custom` word can be used as the returned id. 
+
+  The id's are case insensitive and unique. 
+
+  * If the `custom` id that is provided clashes with another existing
+  id, or if it is a profanity word, the function returns 
+  `{:error, :link, changeset}`. 
+  * If there is something wrong with persisting the `original` in the
+  database, the function returns {:error, :url, changeset}
+  * On success the function returns `{:ok, identifier}` where the 
+  `identifier` is the id as binary.
+  """
   def shorten(original, custom \\ nil) do
     link = get_link(original, custom)
 
@@ -62,10 +83,12 @@ defmodule TinyClone.Shortener do
         where: ^filter_link(custom),
         select: struct(l, [:identifier])
 
-    with %Link{identifier: identifier} <- Repo.one(query) do
-      identifier
-    else
-      _ -> nil
+    case Repo.one(query) do
+      %Link{identifier: identifier} ->
+        identifier
+
+      _ ->
+        nil
     end
   end
 

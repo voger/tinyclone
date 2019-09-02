@@ -3,8 +3,6 @@ defmodule TinyClone.Links.Link do
   import Ecto.Changeset
   alias TinyClone.Links.Link
 
-  require Cl
-
   @primary_key {:identifier, :string, autogenerate: false}
   @derive {Phoenix.Param, key: :identifier}
 
