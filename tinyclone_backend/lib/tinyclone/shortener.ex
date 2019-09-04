@@ -74,6 +74,16 @@ defmodule TinyClone.Shortener do
     end
   end
 
+  def expand(link) do
+    case get_original(link) do
+      %Url{original: original} ->
+        {:ok, original}
+
+      nil ->
+        nil
+    end
+  end
+
   def get_link(original, custom) do
     query =
       from u in Url,
@@ -102,5 +112,18 @@ defmodule TinyClone.Shortener do
 
   def filter_link(custom) do
     dynamic([u, l], l.custom == true and l.identifier == ^custom)
+  end
+
+  defp get_original(nil), do: nil
+
+  defp get_original(link) do
+    query =
+      from l in Link,
+        join: u in Url,
+        on: l.url_id == u.id,
+        where: l.identifier == ^link,
+        select: struct(u, [:original])
+
+    Repo.one(query)
   end
 end

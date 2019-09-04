@@ -21,11 +21,11 @@ defmodule TinyClone.ShortenerTest do
     {:ok, _} = Repo.query("ALTER SEQUENCE urls_id_seq RESTART WITH #{id};")
   end
 
-  test "create new link without custom" do
+  test "create new link without custom succeeds" do
     assert {:ok, "" <> _} = Sh.shorten(@uris[:com])
   end
 
-  test "create new link with custom" do
+  test "create new link with custom succeeds" do
     custom = "example"
     assert {:ok, ^custom} = Sh.shorten(@uris[:com], custom)
   end
@@ -97,5 +97,35 @@ defmodule TinyClone.ShortenerTest do
 
     refute bad_link == link
     assert url_id == bad_id + 1
+  end
+
+  test "expand returns proper url when link exists" do
+    {:ok, com_link} = Sh.shorten(@uris[:com])
+    Sh.shorten(@uris[:net])
+
+    assert Sh.expand(com_link) == {:ok, @uris[:com]}
+  end
+
+  test "expand returns proper url when custom link exists" do
+    Sh.shorten(@uris[:com], "example")
+    Sh.shorten(@uris[:net])
+
+    assert Sh.expand("example") == {:ok, @uris[:com]}
+  end
+
+  test "expand is case insenitive about link" do
+    Sh.shorten(@uris[:com], "example")
+    Sh.shorten(@uris[:net])
+
+    uppercase = String.upcase("example")
+    assert Sh.expand(uppercase) == {:ok, @uris[:com]}
+  end
+
+  test "expand returns nil when link does't exist" do
+    reset_urls_id(1)
+    Sh.shorten(@uris[:com], "example")
+    Sh.shorten(@uris[:net])
+
+    assert Sh.expand("random") == nil
   end
 end
