@@ -74,17 +74,7 @@ defmodule TinyClone.Shortener do
     end
   end
 
-  def expand(link) do
-    case get_original(link) do
-      %Url{original: original} ->
-        {:ok, original}
-
-      nil ->
-        nil
-    end
-  end
-
-  def get_link(original, custom) do
+  defp get_link(original, custom) do
     query =
       from u in Url,
         join: l in Link,
@@ -102,16 +92,26 @@ defmodule TinyClone.Shortener do
     end
   end
 
-  def filter_original(url) do
+  defp filter_original(url) do
     dynamic([u, l], u.original == ^url)
   end
 
-  def filter_link(nil) do
+  defp filter_link(nil) do
     dynamic([u, l], l.custom == false)
   end
 
-  def filter_link(custom) do
+  defp filter_link(custom) do
     dynamic([u, l], l.custom == true and l.identifier == ^custom)
+  end
+
+  def expand(link) do
+    case get_original(link) do
+      %Url{original: original} ->
+        {:ok, original}
+
+      nil ->
+        nil
+    end
   end
 
   defp get_original(nil), do: nil
