@@ -3,12 +3,14 @@ defmodule TinyClone.Repo.Migrations.CreateVisits do
 
   def change do
     create table("visits") do
-      add :ip, :inet
+      add :ip, :inet, null: false
       add :country, :string
-      references(:links, column: :identifier)
+
+      add :link_identifier,
+          references("links", column: :identifier, type: :citext, on_delete: :delete_all),
+          null: false
 
       timestamps()
     end
-
   end
 end
