@@ -47,6 +47,9 @@ defmodule TinyClone.MixProject do
       {:absinthe_plug, "~> 1.4"},
       {:absinthe_ecto, ">= 0.0.0"},
       {:custom_base, "~> 0.2.1"},
+      {:ecto_network, "~> 1.1.0"},
+      {:tesla, "~> 1.2.0"},
+      {:hackney, "~> 1.14.0"},
       {:clouseau, github: "voger/clouseau", branch: "fix_template_crash"},
       {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false}
     ]

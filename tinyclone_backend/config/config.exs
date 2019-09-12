@@ -26,6 +26,13 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Use hackney as adapter for tesla
+config :tesla, adapter: Tesla.Adapter.Hackney
+
+# Country lookup from IP is done with 
+# extreme-ip-lookup.com service
+config :tinyclone, ip_service: TinyClone.Visits.Services.ExtremeIpLookup
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

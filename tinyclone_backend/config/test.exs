@@ -16,3 +16,6 @@ config :tinyclone, TinyClone.Repo,
   database: "tinyclone_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+# mock tesla calls
+config :tesla, adapter: Tesla.Mock
