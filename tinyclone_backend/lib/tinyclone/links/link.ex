@@ -8,35 +8,36 @@ defmodule TinyClone.Links.Link do
 
   schema "links" do
     field :custom, :boolean
-    field :generated, :string, virtual: true
+    field :custom_word, :string, virtual: true
     belongs_to :url, TinyClone.Links.Url
     timestamps()
   end
 
-  @required [:identifier, :url_id, :generated]
-  @optional [:custom]
+  @required [:url_id]
+  @optional [:custom_word]
   def create_changeset(%Link{} = link, attrs) do
     link
     |> cast(attrs, @required ++ @optional)
     |> validate_required(@required)
+    |> assign_identifier
     |> validate_no_profanity
     |> unique_constraint(:identifier, name: "links_pkey")
   end
 
+  defp assign_identifier(%{valid?: false} = changeset) do
+    changeset
+  end
+
+  defp assign_identifier(%{changes: %{url_id: url_id}} = changeset) do
+    custom_word = get_change(changeset, :custom_word, nil)
+
+    changeset
+    |> put_change(:identifier, custom_word || TinyClone.Links.Encoder.encode(url_id))
+    |> put_change(:custom, !!custom_word)
+  end
+
   defp validate_no_profanity(changeset) do
-    changeset
-    |> validate_no_profanity(:identifier)
-    |> validate_no_profanity(:generated)
-  end
-
-  defp validate_no_profanity(%{changes: %{custom: false}} = changeset, :generated) do
-    # If the `:identifier` field is generated we don't need to validate the `:generated`
-    # field. It is the same as the `:identifier` field.
-    changeset
-  end
-
-  defp validate_no_profanity(changeset, field) do
-    validate_change(changeset, field, fn field, value ->
+    validate_change(changeset, :identifier, fn field, value ->
       if TinyClone.Links.Profanities.is_profanity?(value) do
         [{field, {"%{word} is a bad word", word: value}}]
       else

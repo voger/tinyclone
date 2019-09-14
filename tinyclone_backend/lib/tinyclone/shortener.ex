@@ -36,23 +36,14 @@ defmodule TinyClone.Shortener do
       |> Multi.insert(:url, Url.create_changeset(%Url{}, %{original: original}),
         returning: [:id],
 
-        # on_conflict: :nothing does exactly that, nothing. In that case
+        # `on_conflict: :nothing` does exactly that, nothing. In that case
         # postgresql returns nothing, not even our needed :id. We trick
         # postgresql to write the :original again so it returns the :id
         on_conflict: [set: [original: original]],
         conflict_target: :original
       )
       |> Multi.insert(:link, fn %{url: %{id: id}} ->
-        generated = TinyClone.Links.Encoder.encode(id)
-
-        params = %{
-          identifier: custom || generated,
-          generated: generated,
-          custom: !!custom,
-          url_id: id
-        }
-
-        Link.create_changeset(%Link{}, params)
+        Link.create_changeset(%Link{}, %{url_id: id, custom_word: custom})
       end)
       |> Repo.transaction()
       |> case do
