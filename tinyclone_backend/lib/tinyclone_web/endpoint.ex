@@ -1,5 +1,6 @@
 defmodule TinyCloneWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :tinyclone
+  use Absinthe.Phoenix.Endpoint
 
   socket("/socket", TinyCloneWeb.UserSocket,
     websocket: true,

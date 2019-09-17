@@ -45,6 +45,7 @@ defmodule TinyClone.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
+      {:absinthe_phoenix, "~> 1.4"},
       {:absinthe_ecto, ">= 0.0.0"},
       {:custom_base, "~> 0.2.1"},
       {:ecto_network, "~> 1.1.0"},

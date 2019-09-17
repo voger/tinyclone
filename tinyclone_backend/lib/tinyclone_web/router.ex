@@ -18,10 +18,17 @@ defmodule TinyCloneWeb.Router do
 
     get "/", PageController, :index
     get "/:link", PageController, :show
+
+
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", TinyCloneWeb do
-  #   pipe_through :api
-  # end
+  scope "/api" do
+    pipe_through :api
+
+    post "/", Absinthe.Plug, schema: TinyCloneWeb.Schema
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL,
+      schema: TinyCloneWeb.Schema
+      # socket: PlateSlateWeb.UserSocket
+  end
 end
