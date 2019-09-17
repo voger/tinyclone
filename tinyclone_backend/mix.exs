@@ -50,8 +50,10 @@ defmodule TinyClone.MixProject do
       {:ecto_network, "~> 1.1.0"},
       {:tesla, "~> 1.2.0"},
       {:hackney, "~> 1.14.0"},
+
+      # development helpers
       {:clouseau, github: "voger/clouseau", branch: "fix_template_crash"},
-      {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false},
     ]
   end
 

@@ -4,6 +4,10 @@ defmodule TinyClone.Visit do
 
   require Logger
 
+  @doc """
+  Registers a Visit in the database. It accepts the ip address
+  that visited the link and the link identifier.
+  """
   def create_visit(<<ip_addr::binary>>, <<identifier::binary>>) do
     country =
       with service when not is_nil(service) <- Application.get_env(:tinyclone, :ip_service),
@@ -18,7 +22,8 @@ defmodule TinyClone.Visit do
           nil
       end
 
-    params = %{ip: ip_addr, country: country, link_identifier: identifier}
+    params =
+      %{ip: ip_addr, country: country, link_identifier: identifier}
 
     %Visit{}
     |> Visit.create_changeset(params)
