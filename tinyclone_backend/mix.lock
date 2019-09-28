@@ -6,7 +6,7 @@
   "base36": {:hex, :base36, "1.0.0", "7b8e946aec907bc0032e0c2118a05925399d7ed778d4b51a2157ffabd9fa1a6f", [:mix], [{:custom_base, "~> 0.2.0", [hex: :custom_base, optional: false]}]},
   "bunt": {:hex, :bunt, "0.2.0", "951c6e801e8b1d2cbe58ebbd3e616a869061ddadcc4863d0a2182541acae9a38", [:mix], []},
   "certifi": {:hex, :certifi, "2.4.2", "75424ff0f3baaccfd34b1214184b6ef616d89e420b258bb0a5ea7d7bc628f7f0", [:rebar3], [{:parse_trans, "~>3.3", [hex: :parse_trans, optional: false]}]},
-  "clouseau": {:git, "https://github.com/voger/clouseau.git", "44167ba98965816fb01c3e53cff50b100ff0e158", [branch: "fix_template_crash"]},
+  "clouseau": {:hex, :clouseau, "0.5.0", "55e7814ecf9d541942b65d0dd3ccc6bdc413c602bd0754b5afa64afcdb1f237e", [:mix], [{:credo, "~> 1.0", [hex: :credo, optional: true]}]},
   "connection": {:hex, :connection, "1.0.4", "a1cae72211f0eef17705aaededacac3eb30e6625b04a6117c1b2db6ace7d5976", [:mix], []},
   "cowboy": {:hex, :cowboy, "2.6.3", "99aa50e94e685557cad82e704457336a453d4abcb77839ad22dbe71f311fcc06", [:rebar3], [{:cowlib, "~> 2.7.3", [hex: :cowlib, optional: false]}, {:ranch, "~> 1.7.1", [hex: :ranch, optional: false]}]},
   "cowlib": {:hex, :cowlib, "2.7.3", "a7ffcd0917e6d50b4d5fb28e9e2085a0ceb3c97dea310505f7460ff5ed764ce9", [:rebar3], []},

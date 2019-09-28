@@ -53,7 +53,7 @@ defmodule TinyClone.MixProject do
       {:hackney, "~> 1.14.0"},
 
       # development helpers
-      {:clouseau, github: "voger/clouseau", branch: "fix_template_crash"},
+      {:clouseau, "~> 0.5.0"},
       {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false},
     ]
   end
