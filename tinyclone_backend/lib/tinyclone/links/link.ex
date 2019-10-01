@@ -10,6 +10,7 @@ defmodule TinyClone.Links.Link do
     field :custom, :boolean
     field :custom_word, :string, virtual: true
     belongs_to :url, TinyClone.Links.Url
+    has_many :visits, TinyClone.Visits.Visit
     timestamps()
   end
 

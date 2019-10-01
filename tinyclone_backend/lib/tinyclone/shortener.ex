@@ -26,7 +26,7 @@ defmodule TinyClone.Shortener do
   * If there is something wrong with persisting the `original` in the
   database, the function returns {:error, :url, changeset}
   * On success the function returns `{:ok, identifier}` where the 
-  `identifier` is the id as binary.
+  `identifier` is the `Tinyclone.Link.Links` struct with the :url preloaded
   """
   def shorten(original, custom \\ nil) do
     link = get_link(original, custom)
@@ -47,8 +47,8 @@ defmodule TinyClone.Shortener do
       end)
       |> Repo.transaction()
       |> case do
-        {:ok, %{link: %Link{identifier: identifier}}} ->
-          {:ok, identifier}
+        {:ok, %{link: link, url: url}} ->
+          {:ok, %{link | url: url}}
 
         {:error, :link, %{changes: %{custom: false}}, _} ->
           # if :link failed and the user didn't request a custom url
@@ -65,36 +65,39 @@ defmodule TinyClone.Shortener do
     end
   end
 
+
+  def get_link(identifier) do
+    Repo.get(Link, identifier)
+    |> Repo.preload(:url)
+  end
+
   defp get_link(original, custom) do
-    query =
-      from u in Url,
-        join: l in Link,
-        on: l.url_id == u.id,
-        where: ^filter_original(original),
-        where: ^filter_link(custom),
-        select: struct(l, [:identifier])
-
-    case Repo.one(query) do
-      %Link{identifier: identifier} ->
-        identifier
-
-      _ ->
-        nil
-    end
+    from(l in Link,
+      join: u in Url,
+      on: l.url_id == u.id,
+      where: ^filter_original(original),
+      where: ^filter_link(custom)
+    )
+    |> Repo.one()
+    |> Repo.preload(:url)
   end
 
   defp filter_original(url) do
-    dynamic([u, l], u.original == ^url)
+    dynamic([l, u], u.original == ^url)
   end
 
   defp filter_link(nil) do
-    dynamic([u, l], l.custom == false)
+    dynamic([l, u], l.custom == false)
   end
 
   defp filter_link(custom) do
-    dynamic([u, l], l.custom == true and l.identifier == ^custom)
+    dynamic([l, u], l.custom == true and l.identifier == ^custom)
   end
 
+  @doc """
+  Accepts the %Link `:identifier` as a binary and returns the original
+  URI as a binary.
+  """
   def expand(link) do
     case get_original(link) do
       %Url{original: original} ->

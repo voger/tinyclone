@@ -23,7 +23,7 @@ defmodule TinyCloneWeb.PageControllerTest do
     conn =
       build_conn()
       |> Map.put(:remote_ip, address)
-      |> get("/" <> link)
+      |> get("/" <> link.identifier)
 
     assert response(conn, 301)
     assert Enum.any?(conn.resp_headers, &({"location", "http://www.example.com"} == &1))
@@ -40,7 +40,7 @@ defmodule TinyCloneWeb.PageControllerTest do
 
     build_conn()
     |> Map.put(:remote_ip, address)
-    |> get("/" <> link)
+    |> get("/" <> link.identifier)
 
     # Wait a little as visits are created asynchronously
     Process.sleep(500)

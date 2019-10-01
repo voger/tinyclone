@@ -7,8 +7,10 @@ defmodule TinyCloneWeb.Schema do
   import_types __MODULE__.LinkTypes
 
   query do
-    field :hello, :string do
-      resolve fn _, _ -> {:ok, "O hai there."} end
+    field :link, :link do
+      arg :identifier, non_null(:string)
+
+      resolve &Resolvers.Shortener.get_link/2
     end
   end
 

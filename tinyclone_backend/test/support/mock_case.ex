@@ -15,10 +15,8 @@ defmodule TinyClone.MockCase do
         invalid: "www.example.com"
       ]
 
-      setup do
+      setup_all do
         # mock tesla calls
-        # FIXME: mocking the tests globaly as a workaround for this bug
-        # https://github.com/teamon/tesla/issues/157
         mock_global(fn
           %{method: :get, url: "https://extreme-ip-lookup.com/json/" <> @good_ip} ->
             %Tesla.Env{status: 200, body: %{"status" => "success", "countryCode" => "AQ"}}

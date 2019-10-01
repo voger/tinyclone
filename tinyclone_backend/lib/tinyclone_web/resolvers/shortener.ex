@@ -1,10 +1,10 @@
 defmodule TinyCloneWeb.Resolvers.Shortener do
-  alias TinyClone.Shortener, as: Sh
+  alias TinyClone.Shortener
 
   def create_link(%{input: %{url: original, custom: custom}}, _) do
-    case Sh.shorten(original, custom) do
-      {:ok, identifier} ->
-        {:ok, %{link: %{identifier: identifier, original: original}}}
+    case Shortener.shorten(original, custom) do
+      {:ok, link} ->
+        {:ok, %{link: link}}
 
       {:error, _, changeset} ->
         {:error, changeset}
@@ -18,5 +18,18 @@ defmodule TinyCloneWeb.Resolvers.Shortener do
     args
     |> put_in([:input, :custom], nil)
     |> create_link(context)
+  end
+
+  def get_link(%{identifier: identifier}, _) do
+    {:ok, Shortener.get_link(identifier) |> TinyClone.Repo.preload(:url)}
+  end
+
+  def get_original_uri(%{url: %{original: original}}, _, _) do
+    {:ok, original}
+  end
+
+  def get_inserted_at(%{inserted_at: inserted_at}, _, _) do
+    date_time = DateTime.from_naive!(inserted_at, "Etc/UTC")
+    {:ok, date_time}
   end
 end

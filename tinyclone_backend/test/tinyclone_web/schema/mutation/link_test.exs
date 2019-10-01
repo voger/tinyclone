@@ -8,6 +8,17 @@ defmodule TinyClone.Schema.Mutation.LinkTest do
       link {
         identifier
         original
+        dateCreated
+        visits
+        visitsByCountry {
+          country
+          visits
+        }
+        visitsByDate {
+          date
+          visits
+        }
+        
       }
       errors {
         key
@@ -16,7 +27,6 @@ defmodule TinyClone.Schema.Mutation.LinkTest do
     }
   }
   """
-
   test "mutation createLink creates a custom link" do
     url = @uris[:com]
     custom = "test"
@@ -35,10 +45,25 @@ defmodule TinyClone.Schema.Mutation.LinkTest do
     assert %{
              "data" => %{
                "createLink" => %{
-                 "errors" => nil,
+                 "errors" => null,
                  "link" => %{
+                   "dateCreated" => _,
                    "identifier" => ^custom,
-                   "original" => ^url
+                   "original" => ^url,
+                   "visits" => 0,
+                   "visitsByCountry" => [],
+                   "visitsByDate" => [
+                     %{ "date" => <<_date1::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date2::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date3::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date4::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date5::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date6::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date7::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date8::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date9::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date10::binary>>, "visits" => 0 }
+                   ]
                  }
                }
              }
@@ -64,7 +89,21 @@ defmodule TinyClone.Schema.Mutation.LinkTest do
                  "errors" => nil,
                  "link" => %{
                    "identifier" => identifier,
-                   "original" => ^url
+                   "original" => ^url,
+                   "visits" => 0,
+                   "visitsByCountry" => [],
+                   "visitsByDate" => [
+                     %{ "date" => <<_date1::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date2::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date3::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date4::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date5::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date6::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date7::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date8::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date9::binary>>, "visits" => 0 },
+                     %{ "date" => <<_date10::binary>>, "visits" => 0 }
+                   ]
                  }
                }
              }
