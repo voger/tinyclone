@@ -43,6 +43,17 @@ defmodule TinyClone.ShortenerTest do
     assert "#{custom} is a bad word" in errors_on(changeset).identifier
   end
 
+  test "create new link with custom containing spaces failes" do
+    error_message = "must contain only numbers and letters"
+
+    custom_strings = ["test test", "test  test", "test\ttest", "test\ntest"]
+
+    for custom <- custom_strings do
+      {:error, :link, %Ecto.Changeset{} = changeset} = Sh.shorten(@uris[:com], custom)
+      assert error_message in errors_on(changeset).identifier
+    end
+  end
+
   test "create custom link that clashes with generated link fails" do
     {:ok, %Link{identifier: identifier}} = Sh.shorten(@uris[:com])
 

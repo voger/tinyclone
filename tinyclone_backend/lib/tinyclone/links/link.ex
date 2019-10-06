@@ -22,6 +22,7 @@ defmodule TinyClone.Links.Link do
     |> validate_required(@required)
     |> assign_identifier
     |> validate_no_profanity
+    |> validate_no_spaces
     |> unique_constraint(:identifier, name: "links_pkey")
   end
 
@@ -35,6 +36,16 @@ defmodule TinyClone.Links.Link do
     changeset
     |> put_change(:identifier, custom_word || TinyClone.Links.Encoder.encode(url_id))
     |> put_change(:custom, !!custom_word)
+  end
+
+  defp validate_no_spaces(changeset) do
+    validate_change(changeset, :identifier, fn field, value ->
+      if Regex.match?(~r/\s/, value) do
+        [{field, "must contain only numbers and letters"}]
+      else
+        []
+      end
+    end)
   end
 
   defp validate_no_profanity(changeset) do
