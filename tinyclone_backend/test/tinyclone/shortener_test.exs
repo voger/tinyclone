@@ -22,12 +22,12 @@ defmodule TinyClone.ShortenerTest do
   end
 
   test "create new link without custom succeeds" do
-    assert {:ok, "" <> _} = Sh.shorten(@uris[:com])
+    assert {:ok, %Link{}} = Sh.shorten(@uris[:com])
   end
 
   test "create new link with custom succeeds" do
     custom = "example"
-    assert {:ok, ^custom} = Sh.shorten(@uris[:com], custom)
+    assert {:ok, %Link{identifier: ^custom}} = Sh.shorten(@uris[:com], custom)
   end
 
   test "create new link with invalid url fails" do
@@ -44,9 +44,9 @@ defmodule TinyClone.ShortenerTest do
   end
 
   test "create custom link that clashes with generated link fails" do
-    {:ok, link} = Sh.shorten(@uris[:com])
+    {:ok, %Link{identifier: identifier}} = Sh.shorten(@uris[:com])
 
-    {:error, :link, %Ecto.Changeset{} = changeset} = Sh.shorten(@uris[:net], link)
+    {:error, :link, %Ecto.Changeset{} = changeset} = Sh.shorten(@uris[:net], identifier)
 
     assert "has already been taken" in errors_on(changeset).identifier
   end
@@ -66,17 +66,9 @@ defmodule TinyClone.ShortenerTest do
 
     {:ok, link} = Sh.shorten(@uris[:com])
 
-    url_id =
-      Repo.one(
-        from l in Link,
-          join: u in Url,
-          where: l.identifier == ^link,
-          where: l.url_id == u.id,
-          select: u.id
-      )
-
-    refute bad_link == link
-    assert url_id == bad_id + 1
+    refute Map.get(link, :identifier) == bad_link
+    assert link.url.id == bad_id + 1
+    # assert url_id == bad_id + 1
   end
 
   test "sequence creates a link that clashes with a custom link, ignores it and creates a new link" do
@@ -90,12 +82,12 @@ defmodule TinyClone.ShortenerTest do
       Repo.one(
         from l in Link,
           join: u in Url,
-          where: l.identifier == ^link,
+          where: l.identifier == ^link.identifier,
           where: l.url_id == u.id,
           select: u.id
       )
 
-    refute bad_link == link
+    refute bad_link.identifier == link.identifier
     assert url_id == bad_id + 1
   end
 
@@ -103,7 +95,7 @@ defmodule TinyClone.ShortenerTest do
     {:ok, com_link} = Sh.shorten(@uris[:com])
     Sh.shorten(@uris[:net])
 
-    assert Sh.expand(com_link) == {:ok, @uris[:com]}
+    assert Sh.expand(com_link.identifier) == {:ok, @uris[:com]}
   end
 
   test "expand returns proper url when custom link exists" do
