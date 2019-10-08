@@ -66,11 +66,20 @@ defmodule TinyClone.Shortener do
   end
 
 
+  @doc """
+  Returns a `TinyClone.Links.Link` struct identified
+  by it's :identifier
+  """
   def get_link(identifier) do
     Repo.get(Link, identifier)
     |> Repo.preload(:url)
   end
 
+  # returns a `TinyClone.Links.Link` struct which 
+  # is identified by the field :original in it's
+  # associated `TinyClone.Links.Url` struct and
+  # it's custom :identifier if available. Used 
+  # internaly this this module.
   defp get_link(original, custom) do
     from(l in Link,
       join: u in Url,
