@@ -65,7 +65,6 @@ defmodule TinyClone.Shortener do
     end
   end
 
-
   @doc """
   Returns a `TinyClone.Links.Link` struct identified
   by it's :identifier
