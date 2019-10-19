@@ -13,9 +13,6 @@ qx.Class.define("tinyclone.Controller", {
     // main container that holds the pages
     __container: null,
 
-    init: function() {
-    },
-
     getContainer: function() {
       return this.__container;
     },
@@ -34,8 +31,6 @@ qx.Class.define("tinyclone.Controller", {
     },
 
     getPages: function() {
-      if (this.__pages === null) {
-      }
       return this.__pages;
     }
   }
