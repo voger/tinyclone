@@ -24,13 +24,12 @@ qx.Theme.define("tinyclone.theme.Appearance", {
 
    "content-container": {
       style: function() {
-
         // original implementation is 950px wide
         const width = 950;
         return {
           minWidth: width,
           maxWidth: width
-        }
+        };
       }
    }
 
