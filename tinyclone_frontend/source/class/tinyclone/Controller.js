@@ -3,36 +3,38 @@ qx.Class.define("tinyclone.Controller", {
 
   construct: function() {
     this.base(arguments);
-    this.init();
+        this.__pages = {};
+        this.__container = new qx.ui.container.Stack();
   },
 
   members: {
     __pages: null,
+
+    // main container that holds the pages
     __container: null,
 
     init: function() {
-      // add pages to the container
-      this._addPage("shortener", new tinyclone.pages.Shortener());
     },
 
     getContainer: function() {
-      if (this.__container === null) {
-        this.__container = new qx.ui.container.Stack();
-      }
-
       return this.__container;
     },
 
-    _addPage: function(key, page) {
-      this._getPages()[key] = page;
+    /**
+     * Adds a new page to the pages controller
+     * @param key {String} The key that identifies the page
+     * @param page {tinyclone.pages.Page} The page to add
+     *
+     */
+    addPage: function(key, page) {
+      this.getPages()[key] = page;
 
       const container = this.getContainer();
       container.add(page);
     },
 
-    _getPages: function() {
+    getPages: function() {
       if (this.__pages === null) {
-        this.__pages = {};
       }
       return this.__pages;
     }

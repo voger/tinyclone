@@ -56,6 +56,10 @@ qx.Class.define("tinyclone.Application",
       const doc = this.getRoot();
 
       const controller = new tinyclone.Controller();
+
+      // add pages to the container
+      controller.addPage("shortener", new tinyclone.pages.Shortener());
+
       const mainPage = controller.getContainer();
       doc.add(mainPage, {edge: 0});
     }

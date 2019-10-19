@@ -50,7 +50,6 @@ qx.Class.define("tinyclone.elements.ShortenerRenderer", {
 
         // if we are dealing with the second row of the form
         if (position == "south") {
-        
           line.add(item, {width: "30%"});
           line.add(new qx.ui.core.Spacer(), {flex: 5});
         } else if (position == "north") {
@@ -102,8 +101,7 @@ qx.Class.define("tinyclone.elements.ShortenerRenderer", {
      * @param suffix {Boolean} If should include the label suffix. Default true
      * @return {String} The text for the given item.
      */
-    _createLabelText : function(name, item, suffix = true)
-    {
+    _createLabelText : function(name, item, suffix = true) {
       var requiredSuffix = "";
       if (item.getRequired()) {
         requiredSuffix = this.getRequiredSuffix();
@@ -112,6 +110,6 @@ qx.Class.define("tinyclone.elements.ShortenerRenderer", {
       // Create the label. Append a suffix only if there's text to display.
       var labelSuffix = suffix && (name.length > 0 || item.getRequired()) ? this.getLabelSuffix() : "";
       return name + requiredSuffix + labelSuffix;
-    },
+    }
   }
 });
