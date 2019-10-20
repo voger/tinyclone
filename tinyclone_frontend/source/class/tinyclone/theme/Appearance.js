@@ -9,20 +9,20 @@
  ************************************************************************ */
 
 qx.Theme.define("tinyclone.theme.Appearance", {
-    extend: qx.theme.indigo.Appearance,
+  extend: qx.theme.indigo.Appearance,
 
-    appearances: {
+  appearances: {
     "form-renderer-label": {
-        include: "label",
-        style: function() {
-          return {
-            paddingTop: 3,
-            font: "bold"
-          };
-        }
+      include: "label",
+      style: function() {
+        return {
+          paddingTop: 3,
+          font: "bold"
+        };
+      }
     },
 
-   "content-container": {
+    "content-container": {
       style: function() {
         // original implementation is 950px wide
         const width = 950;
@@ -31,8 +31,27 @@ qx.Theme.define("tinyclone.theme.Appearance", {
           maxWidth: width
         };
       }
-   }
+    },
 
+    "application-name-label": {
+      include: "label",
 
+      style: function() {
+        return {
+          font: "logo"
+        };
+      }
+    },
+
+    "button": {
+      base: true,
+
+      style: function() {
+        return {
+          margin: 5,
+          padding: [2, 8]
+        };
+      }
+    }
   }
 });
