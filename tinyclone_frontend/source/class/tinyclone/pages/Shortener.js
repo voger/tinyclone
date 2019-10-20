@@ -3,11 +3,10 @@ qx.Class.define("tinyclone.pages.Shortener", {
 
   construct: function() {
     this.base(arguments);
-    const container = this._getContainer();
 
     // container has no layout. Add one
     const layout = new qx.ui.layout.VBox(18);
-    container.setLayout(layout);
+    this.setLayout(layout);
 
     // The name of the application
     const logo = new qx.ui.basic.Label();
@@ -21,10 +20,10 @@ qx.Class.define("tinyclone.pages.Shortener", {
     // TODO: This must come from an env value or something
     const name = "TinyClone";
     logo.setValue(name);
-    container.add(logo);
+    this.add(logo);
 
 
     const formWidget = new tinyclone.elements.ShortenerForm().getWidget();
-    container.add(formWidget);
+    this.add(formWidget);
   }
 });

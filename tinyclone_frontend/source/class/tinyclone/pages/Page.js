@@ -4,46 +4,57 @@
  *
  */
 qx.Class.define("tinyclone.pages.Page", {
-  extend: qx.ui.container.Composite,
+  extend: qx.ui.tabview.Page,
+  include: [
+    qx.ui.core.MRemoteChildrenHandling,
+    qx.ui.core.MRemoteLayoutHandling
+  ],
+
 
   construct: function() {
     this.base(arguments);
-    this.init();
+    this._setLayout(new qx.ui.layout.Dock());
+
+    this._createChildControl("footer");
   },
 
   members: {
-    __container: null,
-
-    init: function() {
-      const layout = new qx.ui.layout.HBox();
-      this.setLayout(layout);
-
-      // make sure the page is set up
-      this.__addSpacer();
-      this.__addContainer();
-      this.__addSpacer();
+    // overridden
+    getChildrenContainer : function() {
+      return this.getChildControl("content");
     },
 
-    /**
-     * Returns this pages container widget
-     * @return {qx.ui.container.Composite} the pages content container
-     */
-    _getContainer: function() {
-      if (this.__container === null) {
-        this.__container = new qx.ui.container.Composite();
-        this.__container.setAppearance("content-container");
+    // overridden
+    _createChildControlImpl : function(id, hash)
+    {
+      var control;
+
+      switch(id)
+      {
+        case "content":
+          control = new qx.ui.container.Composite();
+
+          const container = new qx.ui.container.Composite();
+          const layout = new qx.ui.layout.HBox();
+          layout.setAlignX("center");
+          layout.setAlignY("middle");
+          container.setLayout(layout);
+
+          container.add(new qx.ui.core.Spacer(), {flex: 1});
+          container.add(control, {flex: 2});
+          container.add(new qx.ui.core.Spacer(), {flex: 1});
+
+          this._add(container, {edge: "north"});
+          break;
+        case "footer":
+          control = new qx.ui.basic.Label();
+          control.setValue("Copyright © goes here");
+          control.setRich(true);
+          this._add(control, {edge: "south"});
+          break;
       }
-      return this.__container;
-    },
 
-    // adds the main container to the page
-    __addContainer: function() {
-      const container = this._getContainer();
-      this.add(container);
-    },
-
-    __addSpacer: function() {
-      this.add(new qx.ui.core.Spacer(), {flex: 1});
+      return control || this.base(arguments, id);
     }
   }
 });
