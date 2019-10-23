@@ -51,6 +51,7 @@ defmodule TinyClone.MixProject do
       {:ecto_network, "~> 1.1.0"},
       {:tesla, "~> 1.2.0"},
       {:hackney, "~> 1.14.0"},
+      {:cors_plug, "~> 2.0"},
 
       # development helpers
       {:clouseau, "~> 0.5.0"},

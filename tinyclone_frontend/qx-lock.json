@@ -1,0 +1,10 @@
+{
+  "libraries": [
+    {
+      "library_name": "qxgraphql",
+      "library_version": "0.0.2-1",
+      "path": "../../qxgraphql"
+    }
+  ],
+  "version": "2.1.0"
+}
