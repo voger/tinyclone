@@ -14,9 +14,11 @@
     }
   ],
   "defaultTarget": "source",
-  "locales": ["en"],
+  "locales": [
+    "en"
+  ],
   "environment": {
-      "qx.icontheme": "Tango"
+    "qx.icontheme": "Tango"
   },
   "applications": [
     {
