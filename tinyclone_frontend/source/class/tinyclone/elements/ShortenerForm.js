@@ -49,7 +49,7 @@ qx.Class.define("tinyclone.elements.ShortenerForm", {
       // TODO: replace the validator with one that rejects white space characters
       form.add(customBox, "to localhost:4000/", 
         function(val) {
-          if (/\s+/.test(val) ){
+          if (/\s/.test(val) ){
             throw new qx.core.ValidationError("WhiteSpaceDetected", "White space characters are not allowed");
           }
         }, 
@@ -75,7 +75,7 @@ qx.Class.define("tinyclone.elements.ShortenerForm", {
       const query = this._getQuery();
       const model = query.getVariables();
       const bindingOptions = {
-        conveter: (data) => data ? data : null
+        converter: (data) => data ? data : null
       }
       urlBox.bind("changeValue", model, "input.url", bindingOptions);
       customBox.bind("changeValue", model, "input.custom", bindingOptions);
