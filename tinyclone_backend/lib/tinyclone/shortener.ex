@@ -94,7 +94,7 @@ defmodule TinyClone.Shortener do
     dynamic([l, u], u.original == ^url)
   end
 
-  defp filter_link(nil) do
+  defp filter_link(custom) when custom in [nil, ""] do
     dynamic([l, u], l.custom == false)
   end
 
