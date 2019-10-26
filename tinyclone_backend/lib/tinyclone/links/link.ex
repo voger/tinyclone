@@ -3,6 +3,7 @@ defmodule TinyClone.Links.Link do
   import Ecto.Changeset
   alias TinyClone.Links.Link
 
+  require Cl
   @primary_key {:identifier, :string, autogenerate: false}
   @derive {Phoenix.Param, key: :identifier}
 
@@ -18,6 +19,9 @@ defmodule TinyClone.Links.Link do
   @optional [:custom_word]
   def create_changeset(%Link{} = link, attrs) do
     link
+    # :custom_word may be nil or "". In case of 
+    # "" ecto's default behavior is to convert it
+    # to nil. This is helpful in our case.
     |> cast(attrs, @required ++ @optional)
     |> validate_required(@required)
     |> assign_identifier
