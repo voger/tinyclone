@@ -15,7 +15,7 @@ qx.Class.define("tinyclone.SService", {
     },
 
     send: function(query) {
-      this.getService().send(query);
+      return this.getService().send(query);
     }
   }
 });

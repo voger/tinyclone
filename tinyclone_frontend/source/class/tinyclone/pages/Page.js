@@ -25,14 +25,13 @@ qx.Class.define("tinyclone.pages.Page", {
     },
 
     // overridden
-    _createChildControlImpl : function(id, hash)
-    {
+    _createChildControlImpl : function(id, hash) {
       var control;
 
-      switch(id)
-      {
+      switch (id) {
         case "content":
           control = new qx.ui.container.Composite();
+          control.setAppearance("content-container");
 
           const container = new qx.ui.container.Composite();
           const layout = new qx.ui.layout.HBox();
@@ -41,7 +40,7 @@ qx.Class.define("tinyclone.pages.Page", {
           container.setLayout(layout);
 
           container.add(new qx.ui.core.Spacer(), {flex: 1});
-          container.add(control, {flex: 2});
+          container.add(control);
           container.add(new qx.ui.core.Spacer(), {flex: 1});
 
           this._add(container, {edge: "north"});

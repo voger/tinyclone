@@ -22,10 +22,27 @@
   },
   "applications": [
     {
+      "default": true,
       "class": "tinyclone.Application",
       "theme": "tinyclone.theme.Theme",
       "name": "tinyclone",
       "bootPath": "source/boot"
+    },
+    {
+      "class": "qxl.testtapper.Application",
+      "name": "testtapper",
+      "theme": "qx.theme.Simple",
+      "title": "Qooxdoo TestTAPper",
+      "environment": {
+        "qx.icontheme": "Tango"
+      },
+      "include": [
+        "*.test.*",
+        "*.*.test.*"
+      ],
+      "exclude": [
+        "qx.test.*"
+      ]
     }
   ]
 }
