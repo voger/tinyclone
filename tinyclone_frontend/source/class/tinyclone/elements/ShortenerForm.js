@@ -29,6 +29,16 @@ qx.Class.define("tinyclone.elements.ShortenerForm", {
     this.init();
   },
 
+  events: {
+    /**
+     * Notifies when the request has been completed
+     * and response has been received. Data is the response 
+     * payload.
+     *
+     */
+    "completed": "qx.event.type.Data"
+  },
+
   members: {
     __form: null,
     __queryObject: null,
@@ -49,7 +59,7 @@ qx.Class.define("tinyclone.elements.ShortenerForm", {
       // TODO: replace the validator with one that rejects white space characters
       form.add(customBox, "to localhost:4000/", 
         function(val) {
-          if (/\s/.test(val) ){
+          if (/\s/.test(val)) {
             throw new qx.core.ValidationError("WhiteSpaceDetected", "White space characters are not allowed");
           }
         }, 
@@ -59,31 +69,26 @@ qx.Class.define("tinyclone.elements.ShortenerForm", {
       // must add button last to give a chance to lines to be created
       const nowButton = new qx.ui.form.Button("now!");
 
-      nowButton.addListener("execute", function() {
-        if (form.validate()) {
-          this._send(form);
-        }
-      }, this);
+      nowButton.addListener("execute", this.__executeNow, this);
 
       form.addButton(nowButton);
 
       // save the form for future reference
       this.__form = form;
 
-
       // bind form values to model
       const query = this._getQuery();
       const model = query.getVariables();
       const bindingOptions = {
-        converter: (data) => data ? data : null
-      }
+        converter: data => data ? data : null
+      };
       urlBox.bind("changeValue", model, "input.url", bindingOptions);
       customBox.bind("changeValue", model, "input.custom", bindingOptions);
     },
 
     _send: function(form) {
       const query = this._getQuery();
-      tinyclone.SService.getInstance().send(query);
+      return tinyclone.SService.getInstance().send(query);
     },
 
     _getQuery: function() {
@@ -91,9 +96,70 @@ qx.Class.define("tinyclone.elements.ShortenerForm", {
     },
 
     getWidget: function() {
-      return new tinyclone.elements.ShortenerRenderer(this.__form);
-    }
+      const form = this.getForm();
+      return new tinyclone.elements.ShortenerRenderer(form);
+    },
 
+    getForm: function() {
+      return this.__form;
+    },
+
+    __executeNow: async function() {
+      const form = this.getForm();
+      if (form.validate()) {
+        try {
+          const request = await this._send(form);
+          const response = request.getResponse();
+          const data = response.data.createLink;
+          if (data.link !== null) {
+            this.fireDataEvent("completed", data.link);
+          } else {
+            this.__handleErrors(data.errors);
+            this.fireDataEvent("completed", data.errors);
+          }
+        } catch(err) {
+          console.log(err);
+          this.fireDataEvent("completed", err.message);
+        }
+      }
+    },
+
+    // sets the appropriate fields invalid with the error
+    // messages. 
+    //
+    // ATTENTION: Empties the errors array that is returned 
+    // from the query result
+    __handleErrors: function(errors){
+      // map error fields to form fields
+      const formKeys = {
+        "identifier": "custom",
+        "original": "url"
+      };
+
+      // map potential messages
+      const messages = {
+        "badWord": "Word is not allowed",
+        "alreadyTaken": "Word is already taken"
+      };
+
+      while(errors.length > 0) {
+        const error = errors.pop();
+        const field = formKeys[error.key];
+
+        let message = error.message;
+
+        if (message.includes("bad word")){
+          message = messages["badWord"]
+        } else if (message.includes("already been taken")){
+          message = messages["alreadyTaken"]
+        }
+
+        const form = this.getForm();
+        const errorItem = form.getItem(field);
+        errorItem.setValid(false);
+        errorItem.setInvalidMessage(message);
+      }
+    }
   },
 
   destruct: function() {
