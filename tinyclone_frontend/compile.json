@@ -4,6 +4,10 @@
     {
       "type": "source",
       "outputPath": "compiled/source",
+      "environment": {
+        "tinyclone.name": "TinyClone",
+        "tinyclone.apiServer": "http://localhost:4000/api/"
+      },
       "bundle": {
         "include": "qx.*"
       }
