@@ -33,8 +33,8 @@ qx.Class.define("tinyclone.pages.Page", {
           control = new qx.ui.container.Composite();
           control.setAppearance("content-container");
 
-          const container = new qx.ui.container.Composite();
-          const layout = new qx.ui.layout.HBox();
+          var container = new qx.ui.container.Composite();
+          var layout = new qx.ui.layout.HBox();
           layout.setAlignX("center");
           layout.setAlignY("middle");
           container.setLayout(layout);
