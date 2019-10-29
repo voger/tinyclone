@@ -1,8 +1,8 @@
 qx.Class.define("tinyclone.pages.Shortener", {
   extend: tinyclone.pages.Page,
 
-  construct: function() {
-    this.base(arguments);
+  construct: function(route) {
+    this.base(arguments, route);
 
     // container has no layout. Add one
     const layout = new qx.ui.layout.VBox(18);
