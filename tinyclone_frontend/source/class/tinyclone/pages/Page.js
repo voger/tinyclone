@@ -10,11 +10,15 @@ qx.Class.define("tinyclone.pages.Page", {
     qx.ui.core.MRemoteLayoutHandling
   ],
 
+  /**
+   * Creates a new Page. 
+   * @param route {String} The route that this page will be accessed
+   *
+   */
+  construct: function(route) {
+    this.base(arguments, route);
 
-  construct: function() {
-    this.base(arguments);
     this._setLayout(new qx.ui.layout.Dock());
-
     this._createChildControl("footer");
   },
 
