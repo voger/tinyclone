@@ -59,14 +59,14 @@ qx.Class.define("tinyclone.Application", {
       const controller = new tinyclone.Controller();
 
       // add pages to the container
-      controller.add(new tinyclone.pages.Shortener("/"));
-      controller.add(new tinyclone.pages.Page("info"));
+      controller.add(new tinyclone.pages.Shortener(""));
+      controller.add(new tinyclone.pages.Info("info"));
       doc.add(controller, {edge: 0});
 
       // set up routing
       const routing = this.getRouting();
-      routing.onGet("/", this._selectPage, controller)
-      routing.onGet("info", this._selectPage, controller);
+      routing.onGet("", this._selectPage, controller)
+      routing.onGet("info*", this._selectPage, controller);
 
       routing.init();
 
@@ -91,6 +91,7 @@ qx.Class.define("tinyclone.Application", {
          return child.getLabel() === data.path;
        });
        this.setSelection([page]);
+       page.start();
     }
   }
 });
