@@ -28,6 +28,10 @@ qx.Class.define("tinyclone.pages.Page", {
       return this.getChildControl("content");
     },
 
+    start: function() {
+      return;
+    },
+
     // overridden
     _createChildControlImpl : function(id, hash) {
       var control;
