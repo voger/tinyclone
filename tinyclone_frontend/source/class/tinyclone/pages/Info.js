@@ -17,8 +17,8 @@ qx.Class.define("tinyclone.pages.Info", {
     start: async function() {
       try {
         await tinyclone.loader.ChartLoader.getInstance().ensureLoaded();
-      } catch (error) {
-        this.error("Google charts library is not loaded: ", error);
+      } catch (err) {
+        this.error("Google charts library is not loaded: ");
       }
     }
 

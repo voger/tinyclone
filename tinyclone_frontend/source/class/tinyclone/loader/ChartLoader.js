@@ -2,42 +2,25 @@ qx.Class.define("tinyclone.loader.ChartLoader", {
   extend: qx.core.Object,
   type: "singleton",
 
-  properties: {
-    /**
-     * null or a promise returning the google
-     * charting library
-     *
-     */
-    gChart: {
-      nullable: true,
-      // check: "qx.core.Promise"
-    },
-  },
-
   members: {
     __dynloader: null,
     __chartUri: "https://www.gstatic.com/charts/loader.js",
+    __loaded: false,
 
     /**
-     * Returns a qx.Promise that informs if the library is loaded
+     * Make sure the google charts libray is loaded
      */
-    ensureLoaded: function() {
-      if (this.getGChart() === null) {
-        let chartPromise = this._getDynloader().start()
-          .then(result => {
-            this.debug("Successfuly loaded google charts library");
-            return result;
-          });
-        this.setGChart(chartPromise);
-
-        // Remove cached loginPromise when a failure occurs to allow retry
-        chartPromise.catch((error) => {
-          this.setGChart(null);
-          this.error("Failed to load google charts library:", error);
-        })
+    ensureLoaded: async function() {
+      if (!this.__loaded){
+        try {
+          let chartPromise = await this._getDynloader().start();
+          this.debug("Successfuly loaded google charts library");
+          this.__loaded == true;
+        } catch(err) {
+          this.__loaded = false
+          this.error("Failed to load google charts library.");
+        }
       }
-
-      return this.getGChart()
     },
 
     _getDynloader: function() {
@@ -47,5 +30,4 @@ qx.Class.define("tinyclone.loader.ChartLoader", {
       return this.__dynloader;
     }
   }
-
 });
