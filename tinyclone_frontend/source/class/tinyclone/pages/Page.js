@@ -28,7 +28,12 @@ qx.Class.define("tinyclone.pages.Page", {
       return this.getChildControl("content");
     },
 
-    start: function() {
+    /**
+     * Is intended to be overriden by sublcasses but this is not mandatory
+     * Handles passed data as each subclass sees fit. 
+     *
+     */
+    handleData: function(data) {
       return;
     },
 

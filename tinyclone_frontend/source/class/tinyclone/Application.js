@@ -65,11 +65,10 @@ qx.Class.define("tinyclone.Application", {
 
       // set up routing
       const routing = this.getRouting();
-      routing.onGet("", this._selectPage, controller)
-      routing.onGet("info*", this._selectPage, controller);
+      routing.onGet("", this._selectPage, controller);
+      routing.onGet("info/{link}", this._selectPage, controller);
 
       routing.init();
-
     },
 
     /**
@@ -78,20 +77,28 @@ qx.Class.define("tinyclone.Application", {
      * @return {qx.application.Routing} The application's routing.
      */
     getRouting: function() {
-      if(!this.__routing) {
+      if (!this.__routing) {
         this.__routing = new qx.application.Routing();
       }
       return this.__routing;
     },
 
     _selectPage: function(data) {
-       const children = this.getChildren();
-       const page = children.find(function(child){
-         console.log("Child: ", child);
-         return child.getLabel() === data.path;
-       });
-       this.setSelection([page]);
-       page.start();
+      // get the first parent from the data path
+      const first = data.path.split("/", 1)[0];
+
+      // gather all the children
+      const children = this.getChildren();
+
+      // find the one labeled `first`
+      const page = children.find(function(child) {
+        return child.getLabel() === first;
+      });
+
+
+      // set selection to that child
+      this.setSelection([page]);
+      page.handleData(data);
     }
   }
 });
