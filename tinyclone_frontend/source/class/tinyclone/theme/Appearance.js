@@ -62,13 +62,13 @@ qx.Theme.define("tinyclone.theme.Appearance", {
       }
     },
 
-    "infobox": {
+    "flash": {
       style: function(states) {
         const backgroundColor = states.success ? 
           "success-background" : "error-background";
 
         const decorator = states.success ? 
-          "infobox-success" : "infobox-error";
+          "flash-success" : "flash-error";
 
         return {
           backgroundColor: backgroundColor,
@@ -79,7 +79,7 @@ qx.Theme.define("tinyclone.theme.Appearance", {
       }
     },
 
-    "infobox/captionbar": {
+    "flash/captionbar": {
       style: function() {
         const height = 16;
         return {
@@ -89,7 +89,7 @@ qx.Theme.define("tinyclone.theme.Appearance", {
       }
     },
 
-    "infobox/info-text": {
+    "flash/flash-text": {
       style: function(states) {
         return {
           font: "default",
@@ -99,7 +99,7 @@ qx.Theme.define("tinyclone.theme.Appearance", {
       } 
     },
 
-    "infobox/close-button": {
+    "flash/close-button": {
       alias: "button",
 
       style: function(states) {
@@ -118,6 +118,19 @@ qx.Theme.define("tinyclone.theme.Appearance", {
         };
       }
 
+    },
+
+    "infobox": {},
+
+    "infobox/information": "application-name-label",
+
+    // dummy selector for all the other entries to inherit
+    "infobox/entry": {
+      style: function() {
+        return {
+          font: "default"
+        };
+      }
     }
   }
 });
