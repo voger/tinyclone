@@ -6,6 +6,7 @@ qx.Class.define("tinyclone.pages.Info", {
 
     // container has no layout. Add one
     const layout = new qx.ui.layout.VBox(18);
+    layout.setAlignX("center");
     this.setLayout(layout);
 
     const queryString = `query GetLink($identifier: String!, $days: Int) {
@@ -36,10 +37,13 @@ qx.Class.define("tinyclone.pages.Info", {
     // instatiate the query object
     this.__queryObject = new qxgraphql.Query(queryString, variablesModel);
 
-    // instatiate the marshaler
-    this.__marshaler = new qx.data.marshal.Json();
-
     this.addListener("changeIdentifier", this._onChangeIdentifier, this);
+
+    // add the widgets
+    const infoBox = new tinyclone.elements.InfoBox();
+    this.bind("model", infoBox, "model");
+    this.add(infoBox, {flex: 1});
+
   },
 
   events: {
@@ -65,6 +69,7 @@ qx.Class.define("tinyclone.pages.Info", {
     model: {
       check: "qx.core.Object",
       nullable: true,
+      init: null,
       apply: "_applyModel",
       event: "changeModel"
     },
@@ -88,11 +93,27 @@ qx.Class.define("tinyclone.pages.Info", {
     handleData: async function(data) {
       try {
         await tinyclone.loader.ChartLoader.getInstance().ensureLoaded();
+
+        const chart = new tinyclone.charts.Chart();
+        chart.setChartType("ColumnChart");
+
+        chart.setModel([
+          ['Germany', 'USA', 'Brazil', 'Canada', 'France', 'RU'],
+          [700, 300, 400, 500, 600, 800]
+        ]);
+        chart.setOption("title", "Countries");
+
+        this.add(chart);
+
         this.setIdentifier(data.params.link);
       } catch (err) {
         console.log(err);
         this.error("Google charts library is not loaded: ");
       }
+    },
+
+    _createInfo: function() {
+
     },
 
     _applyModel: function(val, old) {
@@ -111,13 +132,14 @@ qx.Class.define("tinyclone.pages.Info", {
 
     _onChangeIdentifier: function() {
       this._send();
-
     },
 
     _send: async function() {
       try {
         const result = await tinyclone.SService.getInstance().send(this.__queryObject);
-        console.log(result);
+        const model = qx.data.marshal.Json.createModel(result.getResponse());
+        console.log(model);
+        this.setModel(model);
 
       } catch (err) {
         console.log(err);

@@ -10,7 +10,7 @@ qx.Class.define("tinyclone.pages.Shortener", {
 
     // add the widgets
     this.__addLogo();
-    const infoBox = this.__addInfobox();
+    const flash = this.__addFlash();
     const form = this.__addForm();
 
     form.addListener("completed", function(e) {
@@ -20,10 +20,10 @@ qx.Class.define("tinyclone.pages.Shortener", {
         const formated = qx.lang.String.format(message, 
           [data.original, "http://localhost:4000", data.identifier]);
 
-        infoBox.inform(formated, "success");
+        flash.inform(formated, "success");
       } else {
         const message = "Could not shorten the link. Please check errors below and try again";
-        infoBox.inform(message, "error");
+        flash.inform(message, "error");
       }
     }, this);
   },
@@ -49,10 +49,10 @@ qx.Class.define("tinyclone.pages.Shortener", {
 
     // helper not to litter the constructor
     // returns the infobox object
-    __addInfobox: function() {
-      const infoBox = new tinyclone.elements.InformationBox();
-      this.add(infoBox);
-      return infoBox;
+    __addFlash: function() {
+      const flash = new tinyclone.elements.Flash();
+      this.add(flash);
+      return flash;
     },
 
 

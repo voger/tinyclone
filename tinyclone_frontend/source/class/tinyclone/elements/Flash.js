@@ -1,5 +1,5 @@
 /* eslint-disable no-case-declarations */
-qx.Class.define("tinyclone.elements.InformationBox", {
+qx.Class.define("tinyclone.elements.Flash", {
   extend: qx.ui.core.Widget,
 
   include: [
@@ -15,7 +15,7 @@ qx.Class.define("tinyclone.elements.InformationBox", {
     // force creation of captionbar
     this._createChildControl("captionbar");
     this._createChildControl("close-button");
-    this._createChildControl("info-text");
+    this._createChildControl("flash-text");
   },
 
   properties: {
@@ -23,7 +23,7 @@ qx.Class.define("tinyclone.elements.InformationBox", {
     appearance :
     {
       refine : true,
-      init : "infobox"
+      init : "flash"
     },
 
     // overridden
@@ -76,8 +76,8 @@ qx.Class.define("tinyclone.elements.InformationBox", {
       var control;
 
       switch (id) {
-        case "info-text":
-          control = new qx.ui.basic.Label("test");
+        case "flash-text":
+          control = new qx.ui.basic.Label();
           control.set({
             rich: true,
             allowGrowX: true,
@@ -117,7 +117,7 @@ qx.Class.define("tinyclone.elements.InformationBox", {
     },
 
     _applyMessage: function(value) {
-      const infoText = this.getChildControl("info-text");
+      const infoText = this.getChildControl("flash-text");
       infoText.setValue(value);
     }
   }
