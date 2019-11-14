@@ -2,13 +2,24 @@ qx.Class.define("tinyclone.loader.ChartLoader", {
   extend: qx.core.Object,
   type: "singleton",
 
+  properties: {
+    loaded: {
+      nullable: false,
+      init: false,
+      event: "changeLoaded"
+    }
+  },
+
+  events: {
+    "changeLoaded" : "qx.event.type.Data"
+  },
+
   members: {
-    __loaded: false,
 
     /**
      * Make sure the google charts libray is loaded
      */
-    ensureLoaded: async function() {
+    start: async function() {
       if (!this.__loaded){
         try {
           // first we load the google loaders
@@ -22,16 +33,17 @@ qx.Class.define("tinyclone.loader.ChartLoader", {
           await new qx.Promise((resolve) => {
             google.charts.load("current", 
               {
-              packages: ["corechart"], 
-              callback: resolve
+                packages: ["corechart"], 
+                callback: resolve
               });
           });
           this.debug("Successfuly loaded google charts library");
-          this.__loaded == true;
+          this.setLoaded(true);
         } catch(err) {
-          this.__loaded = false
+          console.log(err);
+          this.setLoaded(false);
           this.error("Failed to load google charts library.");
-        }
+        } 
       }
     }
   }
