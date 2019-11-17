@@ -4,7 +4,7 @@ qx.Class.define("tinyclone.elements.DaysChart", {
 
   construct: function() {
     this.base(arguments);
-    const layout = new qx.ui.layout.Grid();
+    const layout = new qx.ui.layout.VBox();
     this._setLayout(layout);
 
     this._createChildControl("label");
@@ -17,6 +17,12 @@ qx.Class.define("tinyclone.elements.DaysChart", {
   },
 
   properties: {
+
+    appearance: {
+      refine: true,
+      init: "chart"
+    },
+
     days: {
       nullable: true,
       check: "Integer",
@@ -36,16 +42,45 @@ qx.Class.define("tinyclone.elements.DaysChart", {
       switch(id)
       {
         case "label":
-          control = new qx.ui.basic.Label();
-          this._add(control, {row: 0, column: 0, colSpan: 2})
+          control = new qx.ui.basic.Label("Number of visits in the past 30 days");
+          this._add(control)
           break;
         case "bar":
           control = new qx.ui.container.SlideBar();
-          this._add(control, {row: 1, column: 1});
+          this._add(control);
           break;
         case "chart":
           control = new tinyclone.charts.Chart();
           control.setChartType("ColumnChart");
+
+          control.setOptions({
+            reverseCategories: false,
+            legend: {
+              position: "none"
+            },
+            chartArea: {
+              left: 20,
+              width: "70%",
+            },
+            hAxis: {
+              showTextEvery: 1,
+              slantedText: true,
+              direction: "-1",
+              textStyle: {
+                fontSize: 11
+              }
+            },
+            vAxis: {
+              textPosition: "none",
+              gridlines: {
+                count: 0
+              }
+            },
+            tooltip: {
+              trigger: "none"
+            }
+          });
+
 
           const chartLoader = tinyclone.loader.ChartLoader.getInstance();
           chartLoader.bind("loaded", control, "wrapper", {
@@ -56,7 +91,7 @@ qx.Class.define("tinyclone.elements.DaysChart", {
             }
           });
 
-          this._add(control, {row: 2, column: 2});
+          this._add(control, {flex: 1});
           break;
 
       }
@@ -72,16 +107,21 @@ qx.Class.define("tinyclone.elements.DaysChart", {
       }
 
       const dateModel = value.getData().getLink().getVisitsByDate().toArray();
+      const formatter = new qx.util.format.DateFormat("dd/MM");
       const rows = dateModel.map((val) => {
+        const date = new Date(val.getDate());
         return {c: [          
-          {v: new Date(val.getDate())},
+          {v: date, f: formatter.format(date)},
+          {v: val.getVisits()},
           {v: val.getVisits()}
+
         ]};
       });
 
       const columns = [
-        {id: "Date", type: "date"},
-        {id: "Visits", type: "number"}
+        {id: "Date", type: "string"},
+        {id: "Visits", type: "number"},
+        {id: "annotations", type: "string", role: "annotation"}
       ]
 
       const model = {cols: columns, rows: rows}; 

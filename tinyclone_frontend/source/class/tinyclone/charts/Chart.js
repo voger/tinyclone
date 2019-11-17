@@ -37,6 +37,10 @@ qx.Class.define("tinyclone.charts.Chart", {
       apply: "_applyChartType"
     },
 
+    /**
+     * The google charts options object
+     *
+     */
     options: {
       check: "Object",
       nullable: true,
@@ -54,22 +58,6 @@ qx.Class.define("tinyclone.charts.Chart", {
       if (this.__domElement) {
         this.getWrapper().draw(this.__domElement);
       }
-    },
-
-    /** 
-     * Sets a single chart option value, where key is the option name 
-     * and value is the value. To unset an option, pass in null for the value. 
-     * Note that key may be a qualified name, such as 'vAxis.title'.
-     *
-     * @param key {String} The option name
-     * @param value {String} The option value
-     *
-     */
-    setOption: function(key, value) {
-      // update the whole options property
-      const options = this.getOptions();
-      options[key] = value;
-      this.getWrapper().setOption(key, value);
     },
 
     /**
