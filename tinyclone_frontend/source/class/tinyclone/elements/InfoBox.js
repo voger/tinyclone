@@ -84,8 +84,8 @@ qx.Class.define("tinyclone.elements.InfoBox", {
 
           var model2control = {
             converter: data => 
-             qx.lang.String.format("%1 %2", 
-               [data, data === 1 ? "visit" : "visits"])
+            qx.lang.String.format("%1 %2", 
+              [data, data === 1 ? "visit" : "visits"])
           }
 
           controller.addTarget(control, "value", "data.link.visits", false, model2control);

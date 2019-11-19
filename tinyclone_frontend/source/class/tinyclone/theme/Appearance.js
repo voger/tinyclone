@@ -124,12 +124,29 @@ qx.Theme.define("tinyclone.theme.Appearance", {
 
     "infobox/information": "application-name-label",
 
-    // dummy selector for all the other entries to inherit
     "infobox/entry": {
       style: function() {
         return {
           font: "default"
         };
+      }
+    },
+
+    "chart": {},
+
+    "chart/label": {
+      style: function() {
+        return {
+          font: "headline"
+        }
+      }
+    },
+
+    "chart/chart": {
+      style: function() {
+        return {
+          minHeight: 180
+        }
       }
     }
   }

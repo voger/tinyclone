@@ -32,7 +32,8 @@ qx.Class.define("tinyclone.pages.Info", {
 
     // bind this page's properties to the model
     this.bind("identifier", variablesModel, "identifier");
-    this.bind("days", variablesModel, "days");
+    // we need 30 days of data
+    variablesModel.setDays(30);
 
     // instatiate the query object
     this.__queryObject = new qxgraphql.Query(queryString, variablesModel);
@@ -42,27 +43,19 @@ qx.Class.define("tinyclone.pages.Info", {
     // add the widgets
     const infoBox = new tinyclone.elements.InfoBox();
     this.bind("model", infoBox, "model");
-    this.add(infoBox, {flex: 1});
+    this.add(infoBox);
 
+    const daysChart = new tinyclone.elements.DaysChart();
+    this.bind("model", daysChart, "model");
+    this.add(daysChart);
   },
 
   events: {
-    "changeDays": "qx.event.type.Data",
     "changeModel": "qx.event.type.Data",
     "changeIdentifier": "qx.event.type.Data"
   },
 
   properties: {
-    /**
-     * The number of days to display
-     */
-    days: {
-      check: "Integer",
-      nullable: false,
-      init: 20,
-      event: "changeDays"
-    },
-
     /**
      * The model that holds the data to graph
      */
@@ -91,25 +84,7 @@ qx.Class.define("tinyclone.pages.Info", {
 
     // override
     handleData: async function(data) {
-      try {
-        await tinyclone.loader.ChartLoader.getInstance().ensureLoaded();
-
-        const chart = new tinyclone.charts.Chart();
-        chart.setChartType("ColumnChart");
-
-        chart.setModel([
-          ['Germany', 'USA', 'Brazil', 'Canada', 'France', 'RU'],
-          [700, 300, 400, 500, 600, 800]
-        ]);
-        chart.setOption("title", "Countries");
-
-        this.add(chart);
-
-        this.setIdentifier(data.params.link);
-      } catch (err) {
-        console.log(err);
-        this.error("Google charts library is not loaded: ");
-      }
+      this.setIdentifier(data.params.link);
     },
 
     _createInfo: function() {

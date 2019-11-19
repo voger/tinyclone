@@ -4,90 +4,106 @@ qx.Class.define("tinyclone.charts.Chart", {
   construct: function() {
     this.base(arguments);
 
-    this.__wrapper = new google.visualization.ChartWrapper();
-
-    this.prepareWrapper();
-
-    this.setHeight(400);
-    this.setWidth(400);
-
+    this.initWrapper(new tinyclone.charts.DummyWrapper());
+    this.addListenerOnce("appear", this._onAppear, this);
   },
 
   properties: {
+    /**
+     * The data table for the google charts object
+     *
+     */
     model: {
       nullable: true,
       event: "changeModel",
       apply: "_applyModel",
+    },
+
+    /**
+     * The chart wrapper. Can be either a google.vizualization.ChartWrapper
+     * or a tinyclone.charts.DummyWrapper
+     * 
+     */
+    wrapper: {
+      check: "Object",
+      nullable: false,
+      deferredInit: true,
+      apply: "_applyWrapper"
+    },
+
+    chartType: {
+      check: "String",
+      nullable: true,
+      apply: "_applyChartType"
+    },
+
+    /**
+     * The google charts options object
+     *
+     */
+    options: {
+      check: "Object",
+      nullable: true,
+      apply: "_applyOptions"
     }
   },
 
   members: {
     __wrapper: null,
 
-    /**
-     * Sets chart type
-     *
-     * @param {String} The chart type
-     *
-     */
-    setChartType: function(type) {
-      this.getWrapper().setChartType(type);
+    // the element in which to draw the chart
+    __domElement: null,
+
+    // the dataviewer string for the datawrapper
+    __view: null, 
+
+    draw: function(element) {
+      if (this.__domElement) {
+        this.getWrapper().draw(this.__domElement);
+      }
     },
 
-    /** 
-     * Sets a single chart option value, where key is the option name 
-     * and value is the value. To unset an option, pass in null for the value. 
-     * Note that key may be a qualified name, such as 'vAxis.title'.
-     *
-     * @param key {String} The option name
-     * @param value {String} The option value
-     *
-     */
-    setOption: function(key, value) {
-      this.getWrapper().setOption(key, value);
-    },
-
-    /**
-     * Sets a complete options object for a chart.
-     *
-     * @param options {Object} An object with the set of options
-     */
-    setOptions: function(options) {
-      this.getWrapper().setOptions(options);
-    },
-
-    /**
-     * Sets the DataTable for the chart. Pass in one of the following: 
-     * null; a DataTable object; a JSON representation of a DataTable; 
-     * or an array following the syntax of 
-     * [arrayToDataTable()](https://developers.google.com/chart/interactive/docs/reference#google.visualization.arraytodatatable).
-     *
-     * @param table {null|various} The table object
-     */
-    setDataTable: function(table) {
-      this.getWrapper().setDataTable(table);
-    },
-
-    prepareWrapper: function() {
-      this.addListenerOnce("appear", this._onAppear, this);
-    },
-
-    getWrapper: function() {
-      return this.__wrapper;
+    setView: function(view) {
+      this.__view = view;
+      this.getWrapper().setView(this.__view);
     },
 
     _onAppear: function() {
-      const wrapper = this.getWrapper();
+      // const wrapper = await this.getWrapper();
       const element = this.getContentElement().getDomElement();
-      wrapper.draw(element);
+      this.__domElement = element;
+      this.draw();
     },
 
     // property apply
-    _applyModel: function(value, old) {
-      if(old !== null) {
-        old.dispose();
-      }
-      this.setDataTable(value);
+    _applyChartType: function(value) {
+      this.getWrapper().setChartType(value);
+      this.draw();
+    },
+
+    // property apply
+    _applyModel: function(value) {
+      this.getWrapper().setDataTable(value);
+      this.draw();
+    },
+
+    // property apply
+    _applyWrapper: function(value, old) {
+      this._disposeObjects(old);
+
+      //initialize the new wrapper with our properties
+      value.setChartType(this.getChartType());
+      value.setDataTable(this.getModel());
+      value.setOptions(this.getOptions());
+      value.setView(this.__view);
+
+      this.draw();
+    },
+
+    // property apply
+    _applyOptions: function(value) {
+      this.getWrapper().setOptions(value);
+      this.draw();
     }
   }
 });
