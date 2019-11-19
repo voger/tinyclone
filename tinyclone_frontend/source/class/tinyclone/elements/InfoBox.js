@@ -18,7 +18,6 @@ qx.Class.define("tinyclone.elements.InfoBox", {
     this._createChildControl("shortened");
     this._createChildControl("dateCreated");
     this._createChildControl("visits");
-
   },
 
   properties: {
@@ -60,8 +59,8 @@ qx.Class.define("tinyclone.elements.InfoBox", {
           const server = qx.core.Environment.get("tinyclone.redirectServer");
 
           var model2control = {
-            converter: (data) =>
-            qx.lang.String.format('<a href="%1%2">%2</a>', [server, data])
+            converter: data =>
+            qx.lang.String.format("<a href=\"%1%2\">%2</a>", [server, data])
           };
 
           controller.addTarget(control, "value", "data.link.identifier", false, model2control);
@@ -86,7 +85,7 @@ qx.Class.define("tinyclone.elements.InfoBox", {
             converter: data => 
             qx.lang.String.format("%1 %2", 
               [data, data === 1 ? "visit" : "visits"])
-          }
+          };
 
           controller.addTarget(control, "value", "data.link.visits", false, model2control);
           this._add(label, {row: 4, column: 0});

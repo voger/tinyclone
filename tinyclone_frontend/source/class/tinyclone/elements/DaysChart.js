@@ -10,30 +10,33 @@ qx.Class.define("tinyclone.elements.DaysChart", {
     this._createChildControl("label");
     this._createChildControl("bar");
     this._createChildControl("chart");
-  },
 
-  events: {
-    "changeDays": "qx.event.type.Data",
+    const queryString = `query GetVisitsPerDay($identifier: String!, $days: Int) {
+                          link(identifier: $identifier) {
+                              visitsByDate(days: $days) {
+                                date
+                                visits
+                              }
+                            }
+                          }`;
+    // create a model for the variables
+    this.__variables = qx.data.marshal.Json.createModel({identifier: null, days: null});
+
+    // instatiate the query object
+    this.__queryObject = new qxgraphql.Query(queryString, this.__variables);
   },
 
   properties: {
-
     appearance: {
       refine: true,
-      init: "chart"
-    },
-
-    days: {
-      nullable: true,
-      check: "Integer",
-      event: "changeDays"
+      init: "days-chart"
     }
   },
 
   members: {
     __queryObject: null,
-    __marshaler: null,
-
+    __variables: null,
+    
     // overridden
     _createChildControlImpl : function(id, hash)
     {
@@ -42,15 +45,28 @@ qx.Class.define("tinyclone.elements.DaysChart", {
       switch(id)
       {
         case "label":
-          control = new qx.ui.basic.Label("Number of visits in the past 30 days");
+          control = new qx.ui.basic.Label();
           this._add(control)
           break;
         case "bar":
           control = new qx.ui.container.SlideBar();
+           
+          // create a button for each predefined number of days we want
+          // stats for.
+          [7, 14, 21, 30].forEach(function(days) {
+            const button = new qx.ui.form.Button(`${days} Days`);
+            button.addListener("execute", function() {
+              this.setDays(days);
+              this._send();
+            }, this);
+            control.add(button);
+          }, this);
+
           this._add(control);
           break;
         case "chart":
           control = new tinyclone.charts.Chart();
+      // dispose only the dummy wrapper which is a qooxdoo object
           control.setChartType("ColumnChart");
 
           control.setOptions({
@@ -94,7 +110,6 @@ qx.Class.define("tinyclone.elements.DaysChart", {
 
           this._add(control, {flex: 1});
           break;
-
       }
       return control || this.base(arguments, id);
     },
@@ -127,6 +142,29 @@ qx.Class.define("tinyclone.elements.DaysChart", {
       const chart = this.getChildControl("chart");
       chart.setModel(model);
       chart.draw();
+
+      // update the label
+      const label = this.getChildControl("label");
+      label.setValue(this.tr("Number of visits in the past %1 days", [dateModel.length]));
+    },
+
+    setIdentifier: function(value) {
+      this.__variables.setIdentifier(value);
+    },
+
+    setDays: function(value) {
+      this.__variables.setDays(value);
+    },
+
+    _send: async function() {
+      try {
+        const result = await tinyclone.SService.getInstance().send(this.__queryObject);
+        const model = qx.data.marshal.Json.createModel(result.getResponse());
+        this.setModel(model);
+      } catch (err) {
+        console.log(err);
+        this.info("Could not get query result");
+      }
     }
   }
 });
