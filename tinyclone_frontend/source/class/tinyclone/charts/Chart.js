@@ -54,22 +54,18 @@ qx.Class.define("tinyclone.charts.Chart", {
     // the element in which to draw the chart
     __domElement: null,
 
+    // the dataviewer string for the datawrapper
+    __view: null, 
+
     draw: function(element) {
       if (this.__domElement) {
         this.getWrapper().draw(this.__domElement);
       }
     },
 
-    /**
-     * Sets the DataTable for the chart. Pass in one of the following: 
-     * null; a DataTable object; a JSON representation of a DataTable; 
-     * or an array following the syntax of 
-     * [arrayToDataTable()](https://developers.google.com/chart/interactive/docs/reference#google.visualization.arraytodatatable).
-     *
-     * @param table {null|various} The table object
-     */
-    setDataTable: function(table) {
-      this.setModel(table);
+    setView: function(view) {
+      this.__view = view;
+      this.getWrapper().setView(this.__view);
     },
 
     _onAppear: function() {
@@ -88,20 +84,18 @@ qx.Class.define("tinyclone.charts.Chart", {
     // property apply
     _applyModel: function(value) {
       this.getWrapper().setDataTable(value);
+      this.draw();
     },
 
     // property apply
     _applyWrapper: function(value, old) {
-      // dispose only the dummy wrapper which is a qooxdoo object
       this._disposeObjects(old);
-      // if (old && old.classname === "tinyclone.charts.DummyWrapper") {
-      //   old.dispose();
-      // }
 
       //initialize the new wrapper with our properties
       value.setChartType(this.getChartType());
       value.setDataTable(this.getModel());
       value.setOptions(this.getOptions());
+      value.setView(this.__view);
 
       this.draw();
     },

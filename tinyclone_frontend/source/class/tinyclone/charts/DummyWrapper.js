@@ -25,6 +25,10 @@ qx.Class.define("tinyclone.charts.DummyWrapper", {
       this.debug("Dummy chart implementation.");
     },
 
+    setView: function(view) {
+      this.debug("Dummy chart implementation.");
+    },
+
     draw: function(element) {
       const image = document.createElement("IMG");
       image.src = qx.ui.basic.Image.PLACEHOLDER_IMAGE;

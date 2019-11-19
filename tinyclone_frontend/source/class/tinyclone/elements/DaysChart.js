@@ -81,6 +81,7 @@ qx.Class.define("tinyclone.elements.DaysChart", {
             }
           });
 
+          control.setView('{"columns":[0,1,{"calc":"stringify","sourceColumn":1,"type":"string","role":"annotation","properties":{"role":"annotation"}}]}');
 
           const chartLoader = tinyclone.loader.ChartLoader.getInstance();
           chartLoader.bind("loaded", control, "wrapper", {
@@ -112,7 +113,6 @@ qx.Class.define("tinyclone.elements.DaysChart", {
         const date = new Date(val.getDate());
         return {c: [          
           {v: date, f: formatter.format(date)},
-          {v: val.getVisits()},
           {v: val.getVisits()}
 
         ]};
@@ -121,7 +121,6 @@ qx.Class.define("tinyclone.elements.DaysChart", {
       const columns = [
         {id: "Date", type: "string"},
         {id: "Visits", type: "number"},
-        {id: "annotations", type: "string", role: "annotation"}
       ]
 
       const model = {cols: columns, rows: rows}; 
