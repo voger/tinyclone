@@ -132,22 +132,24 @@ qx.Theme.define("tinyclone.theme.Appearance", {
       }
     },
 
-    "chart": {},
+    "days-chart": {},
 
-    "chart/label": {
+    "days-chart/label": {
       style: function() {
         return {
           font: "headline"
-        }
+        };
       }
     },
 
-    "chart/chart": {
+    "days-chart/chart": {
       style: function() {
         return {
           minHeight: 180
-        }
+        };
       }
-    }
+    },
+
+    "days-chart/bar": "slidebar" 
   }
 });

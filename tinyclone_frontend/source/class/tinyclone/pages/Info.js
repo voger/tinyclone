@@ -47,6 +47,7 @@ qx.Class.define("tinyclone.pages.Info", {
 
     const daysChart = new tinyclone.elements.DaysChart();
     this.bind("model", daysChart, "model");
+    this.bind("identifier", daysChart, "identifier");
     this.add(daysChart);
   },
 
@@ -73,36 +74,22 @@ qx.Class.define("tinyclone.pages.Info", {
     identifier: {
       check: "String",
       nullable: true,
-      event: "changeIdentifier",
-      apply: "_applyIdentifier"
+      event: "changeIdentifier"
     }
   },
 
   members: {
     __qyeryObject: null,
-    __marshaler: null,
 
     // override
     handleData: async function(data) {
       this.setIdentifier(data.params.link);
     },
 
-    _createInfo: function() {
-
-    },
-
     _applyModel: function(val, old) {
       if(old !== null) {
         old.dispose();
       }
-    },
-
-    _applyIdentifier: function(val) {
-      // this._send();
-    },
-
-    _onChangeDays: function() {
-
     },
 
     _onChangeIdentifier: function() {
@@ -113,7 +100,6 @@ qx.Class.define("tinyclone.pages.Info", {
       try {
         const result = await tinyclone.SService.getInstance().send(this.__queryObject);
         const model = qx.data.marshal.Json.createModel(result.getResponse());
-        console.log(model);
         this.setModel(model);
 
       } catch (err) {

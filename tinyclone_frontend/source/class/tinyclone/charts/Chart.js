@@ -16,7 +16,7 @@ qx.Class.define("tinyclone.charts.Chart", {
     model: {
       nullable: true,
       event: "changeModel",
-      apply: "_applyModel",
+      apply: "_applyModel"
     },
 
     /**

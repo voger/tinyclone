@@ -36,18 +36,8 @@ qx.Theme.define("tinyclone.theme.Font",
 
       "headline" :
       {
-        size : 22,
-        family : ["serif"],
-        sources:
-        [
-          {
-            family : "JosefinSlab",
-            source: [
-              "qx/decoration/Indigo/font/JosefinSlab-SemiBold.woff",
-              "qx/decoration/Indigo/font/JosefinSlab-SemiBold.ttf"
-            ]
-          }
-        ]
+        size : 24,
+        family: ["Helvetica Neue", "Arial", "Helvetica", "sans-serif"]
       },
 
       "logo": {
