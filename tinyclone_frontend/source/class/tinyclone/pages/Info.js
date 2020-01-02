@@ -49,6 +49,11 @@ qx.Class.define("tinyclone.pages.Info", {
     this.bind("model", daysChart, "model");
     this.bind("identifier", daysChart, "identifier");
     this.add(daysChart);
+
+    const countriesChart = new tinyclone.elements.CountriesChart();
+    this.bind("model", countriesChart, "model");
+    this.bind("identifier", countriesChart, "identifier");
+    this.add(countriesChart);
   },
 
   events: {

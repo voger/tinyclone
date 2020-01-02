@@ -53,7 +53,7 @@ qx.Class.define("tinyclone.Application", {
       */
 
       // start loading google charts library
-      tinyclone.loader.ChartLoader.getInstance().start();
+      // tinyclone.loader.ChartLoader.getInstance().start();
 
       // Document is the application root
       const doc = this.getRoot();

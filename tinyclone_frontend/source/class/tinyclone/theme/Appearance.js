@@ -9,7 +9,7 @@
  ************************************************************************ */
 
 /**
- * 
+ *
  * @asset(qx/icon/${qx.icontheme}/16/actions/window-close.png)
  */
 
@@ -64,10 +64,10 @@ qx.Theme.define("tinyclone.theme.Appearance", {
 
     "flash": {
       style: function(states) {
-        const backgroundColor = states.success ? 
+        const backgroundColor = states.success ?
           "success-background" : "error-background";
 
-        const decorator = states.success ? 
+        const decorator = states.success ?
           "flash-success" : "flash-error";
 
         return {
@@ -96,17 +96,17 @@ qx.Theme.define("tinyclone.theme.Appearance", {
           textColor: states.success ? "success-text" : "error-text",
           padding: [4, 20, 20]
         };
-      } 
+      }
     },
 
     "flash/close-button": {
       alias: "button",
 
       style: function(states) {
-        const backgroundColor = states.success ? 
+        const backgroundColor = states.success ?
           "success-background" : "error-background";
 
-        const decorator = states.success ? 
+        const decorator = states.success ?
           "infobox-success" : "infobox-error";
 
         return {
@@ -145,11 +145,26 @@ qx.Theme.define("tinyclone.theme.Appearance", {
     "days-chart/chart": {
       style: function() {
         return {
-          minHeight: 180
+          height: 160
         };
       }
     },
 
-    "days-chart/bar": "slidebar" 
+    "days-chart/bar": "slidebar",
+
+    "countries-chart": {
+    },
+
+    "countries-chart/bar-chart": {
+      style: function() {
+        return {
+          minWidth: 320,
+          height: 210
+        }
+      }
+    },
+
+    "countries-chart/label": "days-chart/label",
+    "countries-chart/bar": "slidebar"
   }
 });

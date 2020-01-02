@@ -65,49 +65,7 @@ qx.Class.define("tinyclone.elements.DaysChart", {
           this._add(control);
           break;
         case "chart":
-          control = new tinyclone.charts.Chart();
-      // dispose only the dummy wrapper which is a qooxdoo object
-          control.setChartType("ColumnChart");
-
-          control.setOptions({
-            reverseCategories: false,
-            legend: {
-              position: "none"
-            },
-            chartArea: {
-              left: 20,
-              width: "70%",
-            },
-            hAxis: {
-              showTextEvery: 1,
-              slantedText: true,
-              direction: "-1",
-              textStyle: {
-                fontSize: 11
-              }
-            },
-            vAxis: {
-              textPosition: "none",
-              gridlines: {
-                count: 0
-              }
-            },
-            tooltip: {
-              trigger: "none"
-            }
-          });
-
-          control.setView('{"columns":[0,1,{"calc":"stringify","sourceColumn":1,"type":"string","role":"annotation","properties":{"role":"annotation"}}]}');
-
-          const chartLoader = tinyclone.loader.ChartLoader.getInstance();
-          chartLoader.bind("loaded", control, "wrapper", {
-            converter: function(value, _model, _source, target) { 
-              return value === true ? 
-                new google.visualization.ChartWrapper() :
-                target.getWrapper();
-            }
-          });
-
+          control = new tinyclone.charts.DailyVisitsChart();
           this._add(control, {flex: 1});
           break;
       }
@@ -122,30 +80,10 @@ qx.Class.define("tinyclone.elements.DaysChart", {
         return;
       }
 
-      const dateModel = value.getData().getLink().getVisitsByDate().toArray();
-      const formatter = new qx.util.format.DateFormat("dd/MM");
-      const rows = dateModel.map((val) => {
-        const date = new Date(val.getDate());
-        return {c: [          
-          {v: date, f: formatter.format(date)},
-          {v: val.getVisits()}
+      const data = value.getData().getLink().getVisitsByDate().toArray();
 
-        ]};
-      });
-
-      const columns = [
-        {id: "Date", type: "string"},
-        {id: "Visits", type: "number"},
-      ]
-
-      const model = {cols: columns, rows: rows}; 
       const chart = this.getChildControl("chart");
-      chart.setModel(model);
-      chart.draw();
-
-      // update the label
-      const label = this.getChildControl("label");
-      label.setValue(this.tr("Number of visits in the past %1 days", [dateModel.length]));
+      chart.setData(data);
     },
 
     setIdentifier: function(value) {

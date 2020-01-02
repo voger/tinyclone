@@ -49,8 +49,8 @@ defmodule TinyClone.MixProject do
       {:absinthe_ecto, ">= 0.0.0"},
       {:custom_base, "~> 0.2.1"},
       {:ecto_network, "~> 1.1.0"},
-      {:tesla, "~> 1.2.0"},
-      {:hackney, "~> 1.14.0"},
+      {:tesla, "~> 1.3.0"},
+      {:hackney, "~> 1.15.2"},
       {:cors_plug, "~> 2.0"},
 
       # development helpers

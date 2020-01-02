@@ -16,7 +16,7 @@ defmodule TinyClone.Visits.Services.ExtremeIpLookup do
       {:ok, %Tesla.Env{body: %{"status" => "success", "countryCode" => code}}} ->
         {:ok, code}
 
-      _ ->
+      other ->
         :error
     end
   end
