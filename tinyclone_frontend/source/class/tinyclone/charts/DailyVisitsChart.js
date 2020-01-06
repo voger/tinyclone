@@ -12,12 +12,10 @@ qx.Class.define("tinyclone.charts.DailyVisitsChart", {
 
   members: {
     _transformData: function(data) {
-      const chartData = data.map((val) => {
-        return {
+      const chartData = data.map(val => ({
           date: new Date(val.getDate()),
           visits: val.getVisits()
-        };
-      });
+        }));
 
       return chartData.sort((a, b) => a.date - b.date);
     },
@@ -26,6 +24,7 @@ qx.Class.define("tinyclone.charts.DailyVisitsChart", {
     // require a dom element when instatiated this is why we
     // instatiate them when we have one.
     _onAppear: function() {
+      /* eslint-disable no-undef */
       var element = this.getContentElement().getDomElement();
       const chart = this.__chart = am4core.create(element, am4charts.XYChart);
 
@@ -58,6 +57,7 @@ qx.Class.define("tinyclone.charts.DailyVisitsChart", {
       bullet.label.hideOversized = false;
 
       chart.data = this.getData();
+      /* eslint-enable no-undef */
     }
   }
 });

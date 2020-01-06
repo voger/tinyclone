@@ -2,8 +2,11 @@
   "libraries": [
     {
       "library_name": "qxgraphql",
-      "library_version": "0.0.2-1",
-      "path": "../../qxgraphql"
+      "library_version": "0.0.2",
+      "path": "qx_packages/voger_qxgraphql_v0_0_2",
+      "uri": "voger/qxgraphql",
+      "repo_name": "voger/qxgraphql",
+      "repo_tag": "v0.0.2"
     }
   ],
   "version": "2.1.0"

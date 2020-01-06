@@ -52,13 +52,12 @@ qx.Class.define("tinyclone.elements.CountriesChart", {
     },
 
     // overridden
-    _createChildControlImpl : function(id, hash)
-    {
+    _createChildControlImpl : function(id, hash) {
       var control;
 
-      switch(id)
-      {
+      switch (id) {
         case "label":
+          // eslint-disable-next-line no-case-declarations
           const label = this.tr("Number of visits by country");
           control = new qx.ui.basic.Label(label);
           control.setRich(true);
@@ -76,7 +75,7 @@ qx.Class.define("tinyclone.elements.CountriesChart", {
           break;
       }
       return control || this.base(arguments, id);
-    },
+    }
   }
 
 });

@@ -11,21 +11,18 @@ qx.Class.define("tinyclone.charts.VisitsByCountryChart", {
 
   members: {
     _transformData: function(data) {
-      const chartData = data.map((val) => {
-        return {
+      const chartData = data.map(val => ({
           country: val.getCountry() || "Unknown",
           visits: val.getVisits()
-        };
-      });
+        }));
 
       return chartData.sort((a, b) => {
-
         if (a.country === "Unknown") {
-          return -1
+          return -1;
         }
 
         if (b.country === "Unknown") {
-          return 1
+          return 1;
         }
 
         return a.country < b.country ? 1 : -1;
@@ -36,6 +33,7 @@ qx.Class.define("tinyclone.charts.VisitsByCountryChart", {
     // require a dom element when instatiated this is why we
     // instatiate them when we have one.
     _onAppear: function() {
+      /* eslint-disable no-undef */
       var element = this.getContentElement().getDomElement();
       const chart = this.__chart = am4core.create(element, am4charts.XYChart);
       var font = qx.theme.manager.Font.getInstance().resolve("small");
@@ -63,6 +61,7 @@ qx.Class.define("tinyclone.charts.VisitsByCountryChart", {
       bullet.label.hideOversized = false;
 
       chart.data = this.getData();
+      /* eslint-enable no-undef */
     }
   }
 });

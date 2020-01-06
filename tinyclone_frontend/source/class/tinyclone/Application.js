@@ -55,6 +55,9 @@ qx.Class.define("tinyclone.Application", {
       // start loading google charts library
       // tinyclone.loader.ChartLoader.getInstance().start();
 
+      // patch the history object
+      qx.Class.patch(qx.bom.History, tinyclone.patch.MHistory);
+
       // Document is the application root
       const doc = this.getRoot();
 
@@ -67,7 +70,7 @@ qx.Class.define("tinyclone.Application", {
 
       // set up routing
       const routing = this.getRouting();
-      routing.onGet("", this._selectPage, controller);
+      routing.onGet("/", this._selectPage, controller);
       routing.onGet("info/{link}", this._selectPage, controller);
 
       routing.init();

@@ -107,7 +107,7 @@ qx.Theme.define("tinyclone.theme.Appearance", {
           "success-background" : "error-background";
 
         const decorator = states.success ?
-          "infobox-success" : "infobox-error";
+          "flash-success" : "flash-error";
 
         return {
           marginLeft : 2,
@@ -160,7 +160,7 @@ qx.Theme.define("tinyclone.theme.Appearance", {
         return {
           minWidth: 320,
           height: 210
-        }
+        };
       }
     },
 

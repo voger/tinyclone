@@ -53,7 +53,7 @@ qx.Class.define("tinyclone.elements.Flash", {
     /**
      * @lint ignoreReferenceField(_forwardStates)
      */
-    /* eslint-disable-next-line no-refs-in-members */
+    // eslint-disable-next-line @qooxdoo/qx/no-refs-in-members
     _forwardStates: {
       success: true,
       error: true

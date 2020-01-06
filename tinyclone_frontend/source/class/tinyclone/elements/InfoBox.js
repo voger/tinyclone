@@ -37,7 +37,7 @@ qx.Class.define("tinyclone.elements.InfoBox", {
       const controller = this.getController();
 
       switch (id) {
-        case "information": 
+        case "information":
           control = new qx.ui.basic.Label("Information");
           control.setRich(true);
           this._add(control, {row: 0, column: 0, colSpan: 2});
@@ -56,6 +56,7 @@ qx.Class.define("tinyclone.elements.InfoBox", {
           control = new qx.ui.basic.Label();
           control.setRich(true);
 
+          // eslint-disable-next-line no-case-declarations
           const server = qx.core.Environment.get("tinyclone.redirectServer");
 
           var model2control = {
@@ -76,14 +77,14 @@ qx.Class.define("tinyclone.elements.InfoBox", {
           this._add(label, {row: 3, column: 0});
           this._add(control, {row: 3, column: 1});
           break;
-        case "visits": 
+        case "visits":
           label = new qx.ui.basic.Label("Number of visits:");
           control = new qx.ui.basic.Label();
           control.setRich(true);
 
-          var model2control = {
-            converter: data => 
-            qx.lang.String.format("%1 %2", 
+           model2control = {
+            converter: data =>
+            qx.lang.String.format("%1 %2",
               [data, data === 1 ? "visit" : "visits"])
           };
 

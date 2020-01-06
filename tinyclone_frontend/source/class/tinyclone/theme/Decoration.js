@@ -14,7 +14,7 @@ qx.Theme.define("tinyclone.theme.Decoration",
 
     decorations :
     {
-      "infobox-success": {
+      "flash-success": {
         style: {
           backgroundColor: "success-background",
           color: "success-border",
@@ -22,7 +22,7 @@ qx.Theme.define("tinyclone.theme.Decoration",
         }
       },
 
-      "infobox-error": {
+      "flash-error": {
         style: {
           backgroundColor: "error-background",
           color: "error-border",
