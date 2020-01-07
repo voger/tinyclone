@@ -49,11 +49,13 @@ qx.Class.define("tinyclone.elements.ShortenerForm", {
       // create a text field for the long URL
       const urlBox = new qx.ui.form.TextField();
       urlBox.setRequired(true);
+      urlBox.setNativeContextMenu(true);
       form.add(urlBox, "Shorten this", qx.util.Validate.url(), "original", null, {"name": "original"});
 
       // create a text field for the custom identifier
       const customBox = new qx.ui.form.TextField();
       customBox.setPlaceholder("Optional");
+      customBox.setNativeContextMenu(true);
 
       // TODO: replace the name with an actual url
       // TODO: replace the validator with one that rejects white space characters

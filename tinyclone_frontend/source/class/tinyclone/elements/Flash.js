@@ -80,6 +80,9 @@ qx.Class.define("tinyclone.elements.Flash", {
           control = new qx.ui.basic.Label();
           control.set({
             rich: true,
+            breakWithinWords: true,
+            nativeContextMenu: true,
+            selectable: true,
             allowGrowX: true,
             allowGrowY: true
           });
