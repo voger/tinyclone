@@ -1,8 +1,22 @@
+/**
+ * @ignore(showInfo)
+ *
+ */
 qx.Class.define("tinyclone.pages.Shortener", {
   extend: tinyclone.pages.Page,
 
   construct: function(route) {
     this.base(arguments, route);
+
+
+    // used for when we have a shortened link and we want 
+    // the show the info page
+    showInfo = function({href}) {
+      const application = qx.core.Init.getApplication();
+      const routing = application.getRouting();
+      const hash = href.split("#")[1];
+      routing.executeGet(hash);
+    };
 
     // container has no layout. Add one
     const layout = new qx.ui.layout.VBox(18);
@@ -16,7 +30,10 @@ qx.Class.define("tinyclone.pages.Shortener", {
     form.addListener("completed", function(e) {
       const data = e.getData();
       if (qx.lang.Type.isObject(data)) {
-        const message = "%1 has been shortened to <a href=\"%2/%3\">%2/%3</a><br>Go to <a href=\"%2#info/%3\">%2#info/%3</a> to get more information about this link.";
+        const self = this;
+
+        // const message = '%1 has been shortened to <a href="%2/%3">%2/%3</a><br>Go to <a href="%2#info/%3" onClick="qx.core.Init.getApplication().getRouting().get(); return false;">%2#info/%3</a> to get more information about this link.';
+        const message = '%1 has been shortened to <a href="%2/%3">%2/%3</a><br>Go to <a href="%2#info/%3" onClick="showInfo(this); return false">%2#info/%3</a> to get more information about this link.';
         const formated = qx.lang.String.format(message, 
           [data.original, "http://localhost:4000", data.identifier]);
 
@@ -29,6 +46,9 @@ qx.Class.define("tinyclone.pages.Shortener", {
   },
 
   members: {
+    showInfo: function() {
+      console.log("Showing the info");
+    },
     // helper not to litter the constructor
     // returns the logo object
     __addLogo: function() {
