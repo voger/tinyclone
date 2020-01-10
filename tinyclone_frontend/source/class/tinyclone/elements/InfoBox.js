@@ -6,7 +6,7 @@ qx.Class.define("tinyclone.elements.InfoBox", {
 
     const layout = new qx.ui.layout.Grid(10);
     layout.setColumnFlex(1, 1);
-    layout.setColumnAlign(0, "left", "middle");
+    layout.setColumnAlign(0, "left", "top");
     layout.setColumnAlign(1, "left", "middle");
     this._setLayout(layout);
 
@@ -48,6 +48,14 @@ qx.Class.define("tinyclone.elements.InfoBox", {
           control.setRich(true);
 
           controller.addTarget(control, "value", "data.link.original", false);
+          control.set({
+            rich: true,
+            breakWithinWords: true,
+            nativeContextMenu: true,
+            selectable: true,
+            allowGrowX: true,
+            allowGrowY: true
+          });
           this._add(label, {row: 1, column: 0});
           this._add(control, {row: 1, column: 1});
           break;
