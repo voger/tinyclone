@@ -18,7 +18,8 @@ qx.Class.define("tinyclone.pages.Page", {
   construct: function(route) {
     this.base(arguments, route);
 
-    this._setLayout(new qx.ui.layout.Dock());
+    this._setLayout(new qx.ui.layout.VBox());
+    this._createChildControl("content");
     this._createChildControl("footer");
   },
 
@@ -43,6 +44,7 @@ qx.Class.define("tinyclone.pages.Page", {
 
       switch (id) {
         case "content":
+          // the container that hosts the content
           control = new qx.ui.container.Composite();
           control.setAppearance("content-container");
 
@@ -56,13 +58,16 @@ qx.Class.define("tinyclone.pages.Page", {
           container.add(control);
           container.add(new qx.ui.core.Spacer(), {flex: 1});
 
-          this._add(container, {edge: "north"});
+          // create the scroll container
+          var scroll = new qx.ui.container.Scroll();
+          scroll.add(container);
+          this._add(scroll, {flex: 1});
           break;
         case "footer":
           control = new qx.ui.basic.Label();
           control.setValue("Copyright © goes here");
           control.setRich(true);
-          this._add(control, {edge: "south"});
+          this._add(control);
           break;
       }
 
