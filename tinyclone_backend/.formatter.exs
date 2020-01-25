@@ -3,6 +3,9 @@
   import_deps: [:absinthe, :ecto, :ecto_sql, :plug],
   locals_without_parens: [
     raise: :*,
-    mock: :*
+    forward: :*,
+    mock: :*,
+    plug: :*,
+    pipe_through: :*
   ]
 ]
