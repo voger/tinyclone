@@ -8,7 +8,7 @@ Not production code.
   If you do, whatever happens is your fault.
 
 * No care is given to maintain the simplicity of the original code. The goal is
-  to learn to use various tools.
+  to learn to how use various tools.
 
 * As long as I call it done I will probably abandon it to do some other project.
 
@@ -35,7 +35,7 @@ Not production code.
       $ docker-compose build
     ```
 
-   Build is going to take some time. You may want to go and make some tea.
+   Building is going to take some time. You may want to go and make some tea.
 
 * Run this repo
 
