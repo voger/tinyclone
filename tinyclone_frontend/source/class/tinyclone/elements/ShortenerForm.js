@@ -135,13 +135,14 @@ qx.Class.define("tinyclone.elements.ShortenerForm", {
       // map error fields to form fields
       const formKeys = {
         "identifier": "custom",
-        "original": "url"
+        "original": "original"
       };
 
       // map potential messages
       const messages = {
         "badWord": "Word is not allowed",
-        "alreadyTaken": "Word is already taken"
+        "alreadyTaken": "Word is already taken",
+        "invalidURL": "This is not a valid URL"
       };
 
       while(errors.length > 0) {
@@ -152,8 +153,10 @@ qx.Class.define("tinyclone.elements.ShortenerForm", {
 
         if (message.includes("bad word")){
           message = messages["badWord"]
-        } else if (message.includes("already been taken")){
+        } else if (message.includes("already been taken")) {
           message = messages["alreadyTaken"]
+        } else if (message.includes("is not a valid url")) {
+          message = messages["invalidURL"]
         }
 
         const form = this.getForm();
