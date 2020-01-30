@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  database: 
+    image: postgres:12-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+    networks:
+      - back-tier
+  backend:
+    build:
+      context: ./tinyclone_backend
+    restart: always
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    environment:
+      APP_PORT: ${APP_PORT}
+      APP_HOSTNAME: ${APP_HOSTNAME}
+      APP_NAME: ${APP_NAME}
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+      PGHOST: ${PGHOST}
+      PGPORT: ${PGPORT}
+      PGDATABASE: ${PGDATABASE}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+    depends_on:
+      - database
+    networks:
+      - back-tier
+  web:
+    build:
+      context:
+        ./tinyclone_frontend
+      args:
+        API_SERVER: ${API_SERVER}
+        REDIRECT_SERVER: ${REDIRECT_SERVER}
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:8080"
+    networks:
+      - front-tier
+      - back-tier
+
+networks: 
+  front-tier:
+  back-tier:
+

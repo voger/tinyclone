@@ -10,8 +10,9 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :tinyclone, TinyCloneWeb.Endpoint,
-  http: [:inet6, port: System.get_env("PORT") || 4000],
-  url: [host: "example.com", port: 80],
+  load_from_system_env: true,
+  http: [:inet6, port: System.get_env("APP_PORT") || 4000],
+  url: [host: Application.get_env(:tinyclone, :app_hostname), port: Application.get_env(:tinyclone, :app_port)],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
@@ -61,11 +62,11 @@ config :logger, level: :info
 # Alternatively, you can configure exactly which server to
 # start per endpoint:
 #
-#     config :tinyclone, TinyCloneWeb.Endpoint, server: true
+    config :tinyclone, TinyCloneWeb.Endpoint, server: true
 #
 # Note you can't rely on `System.get_env/1` when using releases.
 # See the releases documentation accordingly.
 
 # Finally import the config/prod.secret.exs which should be versioned
 # separately.
-import_config "prod.secret.exs"
+# import_config "prod.secret.exs"

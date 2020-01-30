@@ -32,10 +32,9 @@ qx.Class.define("tinyclone.pages.Shortener", {
       if (qx.lang.Type.isObject(data)) {
         const self = this;
 
-        // const message = '%1 has been shortened to <a href="%2/%3">%2/%3</a><br>Go to <a href="%2#info/%3" onClick="qx.core.Init.getApplication().getRouting().get(); return false;">%2#info/%3</a> to get more information about this link.';
         const message = '%1 has been shortened to <a href="%2/%3">%2/%3</a><br>Go to <a href="%2#info/%3" onClick="showInfo(this); return false">%2#info/%3</a> to get more information about this link.';
         const formated = qx.lang.String.format(message, 
-          [data.original, "http://localhost:4000", data.identifier]);
+          [data.original, window.location.hostname, data.identifier]);
 
         flash.inform(formated, "success");
       } else {
