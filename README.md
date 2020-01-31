@@ -10,7 +10,7 @@ Not production code.
 * No care is given to maintain the simplicity of the original code. The goal is
   to learn to how use various tools.
 
-* As long as I call it done I will probably abandon it to do some other project.
+* As soon as I call it done I will probably abandon it to do some other project.
 
 * Not everything is implemented. Especially:
     * No code to update the copyright notice.
