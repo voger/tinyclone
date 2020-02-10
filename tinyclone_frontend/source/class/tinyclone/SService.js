@@ -4,7 +4,7 @@ qx.Class.define("tinyclone.SService", {
 
   construct: function() {
     this.base(arguments);
-    const server = qx.core.Environment.get("tinyclone.apiServer");
+    const server = tinyclone.util.Server.getApiServer();
     this.__service = new qxgraphql.HTTP(server);
   },
 

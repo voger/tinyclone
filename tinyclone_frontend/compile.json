@@ -18,15 +18,13 @@
     "en"
   ],
   "environment": {
-    "qx.icontheme": "Tango"
+    "qx.icontheme": "Tango",
+    "tinyclone.name": "TinyClone",
+    "tinyclone.apiServer": null,
+    "tinyclone.redirectServer": null
   },
   "applications": [
     {
-      "environment": {
-        "tinyclone.name": "TinyClone",
-        "tinyclone.apiServer": "http://localhost:4000/api/",
-        "tinyclone.redirectServer": "http://localhost:4000/"
-      },
       "default": true,
       "class": "tinyclone.Application",
       "theme": "tinyclone.theme.Theme",

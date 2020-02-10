@@ -4,8 +4,6 @@ USER node
 ARG API_SERVER
 ARG REDIRECT_SERVER
 
-ENV API_SERVER      $API_SERVER
-ENV REDIRECT_SERVER $REDIRECT_SERVER
 
 ENV LC_ALL C.UTF-8
 ENV NPM_CONFIG_PREFIX /home/node/.npm-global
@@ -17,25 +15,30 @@ RUN npm install -g --quiet --no-progress \
       @qooxdoo/compiler@1.0.0-beta.20200111-0015
 
 COPY --chown=node:node compile.json \
-     Manifest.json     \
-     package-lock.json \
-     package.json      \
-     qx-lock.json      \
-     webpack.config.js /source/
+  Manifest.json     \
+  package-lock.json \
+  package.json      \
+  qx-lock.json      \
+  webpack.config.js /source/
 COPY --chown=node:node source /source/source
 
 WORKDIR /source
 
 RUN npm install --quiet --no-progress
-RUN npx webpack-cli
-RUN set -xe && npx qx compile \
+# RUN npx webpack-cli
+
+
+ENV API_SERVER      $API_SERVER
+ENV REDIRECT_SERVER $REDIRECT_SERVER
+RUN ["/bin/bash", "-c", "set -xe && eval npx qx compile \
       --target build \
       --minify mangle \
       --verbose true \
       --clean true \
-      --download true \
-      --set-env tinyclone.apiServer="$API_SERVER" \
-      --set-env tinyclone.redirectServer="$REDIRECT_SERVER"
+      ${API_SERVER:+--set-env tinyclone.apiServer=\"$API_SERVER\"} \
+      ${REDIRECT_SERVER:+--set-env tinyclone.redirectServer=\"$REDIRECT_SERVER\"} \
+      --download true"]
+
 
 # Clean unneded files
 WORKDIR /source/compiled/build/
