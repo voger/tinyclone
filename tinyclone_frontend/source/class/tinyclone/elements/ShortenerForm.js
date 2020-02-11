@@ -8,11 +8,10 @@ qx.Class.define("tinyclone.elements.ShortenerForm", {
                         link {
                           identifier
                           original
-                          dateCreated     
                         }
                         errors {
-                        key
-                        message
+                          key
+                          message
                         }
                       }
                     }`;
@@ -58,8 +57,7 @@ qx.Class.define("tinyclone.elements.ShortenerForm", {
       customBox.setNativeContextMenu(true);
 
       // TODO: replace the name with an actual url
-      // TODO: replace the validator with one that rejects white space characters
-      form.add(customBox, "to localhost:4000/", 
+      form.add(customBox, tinyclone.util.Server.getRedirectServer() + "/", 
         function(val) {
           if (/\s/.test(val)) {
             throw new qx.core.ValidationError("WhiteSpaceDetected", "White space characters are not allowed");

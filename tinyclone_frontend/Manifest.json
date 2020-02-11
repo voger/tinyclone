@@ -22,7 +22,7 @@
     "translation": "source/translation"
   },
   "requires": {
-    "@qooxdoo/framework": "^6.0.0-beta-20191223-1226",
+    "@qooxdoo/framework": "^6.0.0-beta",
     "@qooxdoo/compiler": "^1.0.0-beta",
     "voger/qxgraphql": "^0.0.2"
   },

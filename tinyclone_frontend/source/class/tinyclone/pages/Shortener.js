@@ -8,10 +8,9 @@ qx.Class.define("tinyclone.pages.Shortener", {
   construct: function(route) {
     this.base(arguments, route);
 
-
     // used for when we have a shortened link and we want 
     // the show the info page
-    showInfo = function({href}) {
+    window.showInfo = function({href}) {
       const application = qx.core.Init.getApplication();
       const routing = application.getRouting();
       const hash = href.split("#")[1];
@@ -30,11 +29,16 @@ qx.Class.define("tinyclone.pages.Shortener", {
     form.addListener("completed", function(e) {
       const data = e.getData();
       if (qx.lang.Type.isObject(data)) {
-        const self = this;
+        const identifier = data.identifier;
 
-        const message = '%1 has been shortened to <a href="%2/%3">%2/%3</a><br>Go to <a href="%2#info/%3" onClick="showInfo(this); return false">%2#info/%3</a> to get more information about this link.';
+        // eslint-disable-next-line quotes 
+        const message = '%1 has been shortened to <a href="%2">%2</a><br>Go to <a href="%3" onClick="showInfo(this); return false">%3</a> to get more information about this link.';
         const formated = qx.lang.String.format(message, 
-          [data.original, window.location.hostname, data.identifier]);
+          [
+            data.original, 
+            `${tinyclone.util.Server.getRedirectServer()}/${identifier}`,
+            `${window.location.origin}/#info/${identifier}`
+          ]);
 
         flash.inform(formated, "success");
       } else {
@@ -45,9 +49,6 @@ qx.Class.define("tinyclone.pages.Shortener", {
   },
 
   members: {
-    showInfo: function() {
-      console.log("Showing the info");
-    },
     // helper not to litter the constructor
     // returns the logo object
     __addLogo: function() {

@@ -12,6 +12,7 @@
  * This is the main application class of "tinyclone"
  *
  * @asset(tinyclone/*)
+ * @require(tinyclone.lang.normalize.Location)
  */
 qx.Class.define("tinyclone.Application", {
   extend : qx.application.Standalone,
@@ -51,9 +52,6 @@ qx.Class.define("tinyclone.Application", {
         Below is your actual application code...
       -------------------------------------------------------------------------
       */
-
-      // start loading google charts library
-      // tinyclone.loader.ChartLoader.getInstance().start();
 
       // patch the history object
       qx.Class.patch(qx.bom.History, tinyclone.patch.MHistory);
