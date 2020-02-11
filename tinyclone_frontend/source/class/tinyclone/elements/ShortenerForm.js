@@ -35,7 +35,13 @@ qx.Class.define("tinyclone.elements.ShortenerForm", {
      * payload.
      *
      */
-    "completed": "qx.event.type.Data"
+    "completed": "qx.event.type.Data",
+
+    /**
+     * Notified when there is a communication error with the server
+     *
+     */
+    "error": "qx.event.type.Data"
   },
 
   members: {
@@ -119,7 +125,7 @@ qx.Class.define("tinyclone.elements.ShortenerForm", {
           }
         } catch(err) {
           console.log(err);
-          this.fireDataEvent("completed", err.message);
+          this.fireDataEvent("error", err.message);
         }
       }
     },

@@ -46,6 +46,11 @@ qx.Class.define("tinyclone.pages.Shortener", {
         flash.inform(message, "error");
       }
     }, this);
+
+    form.addListener("error", function(e) {
+      const message = "There was an error connecting with the shortener service. Please try again later.";
+      flash.inform(message, "error");
+    }, this);
   },
 
   members: {
